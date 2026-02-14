@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-17-crud": {
+    "kids_quran_dashboard": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-17-crud",
+            "outputPath": "dist/kids_quran_dashboard",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -32,33 +32,37 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              {
+                "glob": "**/*",
+                "input": "src/assets/audio",
+                "output": "/assets/audio"
+              }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.slim.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,
@@ -72,10 +76,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-17-crud:build:production"
+              "buildTarget": "kids_quran_dashboard:build:production"
             },
             "development": {
-              "buildTarget": "angular-17-crud:build:development"
+              "buildTarget": "kids_quran_dashboard:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "angular-17-crud:build"
+            "buildTarget": "kids_quran_dashboard:build"
           }
         },
         "test": {
@@ -99,12 +103,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

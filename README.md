@@ -1,72 +1,66 @@
-# Angular 17 example project: CRUD with Rest API
+# Fatimah's Quran Journey 🌙
 
-Build an Angular 17 CRUD example App to consume Rest APIs, display, modify & search data.
+A child-friendly, interactive Quran learning application built with **Angular 17+**, designed for touchscreen/kiosk mode on Raspberry Pi, tablets, and desktop browsers. Full offline capability with PWA support.
 
-Tutorial Application in that:
-- Each Tutorial has id, title, description, published status.
-- We can create, retrieve, update, delete Tutorials.
-- There is a Search bar for finding Tutorials by title.
+## Tech Stack
 
-![angular-17-crud-example](angular-17-crud-example.png)
+- **Angular 17+** (standalone components)
+- **TailwindCSS 3.x**
+- **Angular Signals** for state management
+- **HTML5 Audio API**
+- **PWA** (Angular Service Worker ready)
 
-Run `ng serve --port 8081` for a dev server. Navigate to `http://localhost:8081/`. The app will automatically reload if you change any of the source files.
+## Quick Start
 
-For instruction, please visit:
-> [Angular 17 CRUD example with Rest API](https://www.bezkoder.com/angular-17-crud-example/)
+```bash
+# Install dependencies (if needed)
+npm install
 
-More Practice:
-> [Angular 17 Pagination example](https://www.bezkoder.com/angular-17-pagination-ngx/)
+# Development server
+npm start
+# Open http://localhost:4200
 
-> [Angular 17 JWT Authentication & Authorization example](https://www.bezkoder.com/angular-17-jwt-auth/)
+# Production build
+npm run build:prod
+# Output: dist/kids_quran_dashboard/
+```
 
-> [Angular 17 File upload example with Progress bar](https://www.bezkoder.com/angular-17-file-upload/)
+## Project Structure
 
-> [Angular 17 Form Validation example](https://www.bezkoder.com/angular-17-form-validation/)
+- `src/app/core/` — Models, services, and static data (surahs, duas, hadiths, Arabic letters)
+- `src/app/features/` — Home, Surahs (list + detail with Listen/Read modes), Duas, Hadith, Letters (alphabet, joining, words), Nasheeds
+- `src/app/shared/` — Header, navigation, audio controls, back button, pipes, directives
+- `src/assets/audio/` — Place MP3 files for surahs, duas, and nasheeds here
 
-Fullstack with Node:
+## Features
 
-> [Angular 17 + Node Express + MySQL example](https://www.bezkoder.com/angular-17-node-js-express-mysql/)
+- **Home** — Welcome screen with progress summary and quick actions
+- **Surahs** — Library with search; detail view with Listen (verse-by-verse) and Read (full text) modes and audio controls
+- **Duas** — List by category; detail with Arabic, transliteration, translation, and explanation
+- **Hadith** — Daily hadith with story and lesson
+- **Letters** — Arabic alphabet, letter joining, and simple words
+- **Nasheeds** — Placeholder for Islamic songs (add audio to `src/assets/audio/nasheeds/`)
+- **Progress** — Memorized surahs and activity stored in `localStorage`
 
-> [Angular 17 + Node Express + PostgreSQL example](https://www.bezkoder.com/angular-17-node-js-express-postgresql/)
+## Adding Audio
 
-> [Angular 17 + Node Express + MongoDB example](https://www.bezkoder.com/angular-17-node-js-express-mongodb/)
+1. Add MP3 files under `src/assets/audio/surahs/`, `src/assets/audio/duas/`, or `src/assets/audio/nasheeds/`.
+2. Reference them in the data files (e.g. `surahs.data.ts`) as `assets/audio/surahs/your-file.mp3`.
 
-> [Angular 17 + Node Express: File upload example](https://www.bezkoder.com/angular-17-node-express-file-upload/)
+## Kiosk Mode (Raspberry Pi)
 
-Fullstack with Spring Boot:
+1. Build: `npm run build:prod`
+2. Copy `dist/kids_quran_dashboard/` to the Pi (e.g. `/home/pi/quran-app/`).
+3. Make the script executable: `chmod +x launch-kiosk.sh`
+4. Run `./launch-kiosk.sh` or add to autostart (see spec for `~/.config/autostart/quran-app.desktop`).
 
-> [Angular 17 + Spring Boot example](https://www.bezkoder.com/spring-boot-angular-17-crud/)
+**Note:** The build output path may be `dist/kids_quran_dashboard/browser/` — update `launch-kiosk.sh` with the correct path to `index.html` if needed.
 
-> [Angular 17 + Spring Boot + MySQL example](https://www.bezkoder.com/spring-boot-angular-17-mysql/)
+## Scripts
 
-> [Angular 17 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-angular-17-postgresql/)
-
-> [Angular 17 + Spring Boot + MongoDB example](https://www.bezkoder.com/spring-boot-angular-17-mongodb/)
-
-> [Angular 17 + Spring Boot: File upload example](https://www.bezkoder.com/angular-17-spring-boot-file-upload/)
-
-Fullstack with Django:
-> [Angular + Django example](https://www.bezkoder.com/django-angular-13-crud-rest-framework/)
-
-> [Angular + Django + MySQL](https://www.bezkoder.com/django-angular-mysql/)
-
-> [Angular + Django + PostgreSQL](https://www.bezkoder.com/django-angular-postgresql/)
-
-> [Angular + Django + MongoDB](https://www.bezkoder.com/django-angular-mongodb/)
-
-Security:
-> [Angular 17 + Spring Boot: JWT Authentication and Authorization example](https://www.bezkoder.com/angular-17-spring-boot-jwt-auth/)
-
-> [Angular 17 + Node.js Express: JWT Authentication and Authorization example](https://www.bezkoder.com/node-js-angular-17-jwt-auth/)
-
-Serverless with Firebase:
-> [Angular 17 Firebase CRUD with Realtime DataBase](https://www.bezkoder.com/angular-17-firebase-crud/)
-
-> [Angular 17 Firestore CRUD example](https://www.bezkoder.com/angular-17-firestore-crud/)
-
-> [Angular 17 Firebase Storage: File Upload/Display/Delete example](https://www.bezkoder.com/angular-17-firebase-storage/)
-
-Integration (run back-end & front-end on same server/port)
-> [How to integrate Angular with Node Restful Services](https://bezkoder.com/integrate-angular-12-node-js/)
-
-> [How to Integrate Angular with Spring Boot Rest API](https://bezkoder.com/integrate-angular-12-spring-boot/)
+| Script        | Description                |
+|---------------|----------------------------|
+| `npm start`   | Dev server                 |
+| `npm run build` | Default build            |
+| `npm run build:prod` | Production build      |
+| `npm run watch` | Watch mode development |

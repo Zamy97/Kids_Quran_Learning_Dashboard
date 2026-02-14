@@ -1,18 +1,36 @@
-import { Component, computed, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed, Input, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { AudioPlayerService } from '../../../core/services/audio-player.service';
 
 @Component({
   selector: 'app-audio-controls',
   standalone: true,
   template: `
-    <div class="bg-gradient-to-r from-primary to-primary-light p-4 md:p-6 rounded-2xl shadow-lg">
-      <div class="flex items-center gap-3 md:gap-4 mb-4">
+    <div
+      class="bg-gradient-to-r from-primary to-primary-light text-white shadow-lg"
+      [class.p-4]="!compact"
+      [class.md:p-6]="!compact"
+      [class.rounded-2xl]="!compact"
+      [class.p-3]="compact"
+      [class.rounded-none]="compact"
+    >
+      <div
+        class="flex items-center gap-3 md:gap-4"
+        [class.mb-4]="!compact"
+        [class.flex-nowrap]="compact"
+      >
         <button
           (click)="togglePlay()"
           [disabled]="audioState().loading"
-          class="bg-white text-primary px-6 py-3 md:px-8 md:py-4 rounded-full
-                 font-bold text-lg md:text-xl hover:scale-105 transition-all
-                 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-white text-primary rounded-full font-bold hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          [class.px-6]="!compact"
+          [class.py-3]="!compact"
+          [class.md:px-8]="!compact"
+          [class.md:py-4]="!compact"
+          [class.text-lg]="!compact"
+          [class.md:text-xl]="!compact"
+          [class.px-4]="compact"
+          [class.py-2]="compact"
+          [class.text-base]="compact"
         >
           @if (audioState().loading) {
             <span class="animate-spin">⏳</span>
@@ -28,17 +46,22 @@ import { AudioPlayerService } from '../../../core/services/audio-player.service'
           [value]="audioState().currentTime"
           [max]="audioState().duration || 100"
           (input)="onSeek($event)"
-          class="flex-1 h-2 bg-white/30 rounded-full appearance-none cursor-pointer"
+          class="flex-1 min-w-0 h-2 bg-white/30 rounded-full appearance-none cursor-pointer"
         />
 
-        <span class="text-white font-semibold text-sm md:text-base min-w-[80px] text-right">
+        <span class="font-semibold text-right shrink-0" [class.min-w-[80px]]="!compact" [class.text-sm]="compact" [class.md:text-base]="!compact">
           {{ formatTime(audioState().currentTime) }} / {{ formatTime(audioState().duration) }}
         </span>
 
         <select
           [value]="audioState().playbackRate"
           (change)="onSpeedChange($event)"
-          class="bg-white text-primary px-3 py-2 rounded-full font-semibold cursor-pointer"
+          class="bg-white text-primary rounded-full font-semibold cursor-pointer shrink-0"
+          [class.px-3]="!compact"
+          [class.py-2]="!compact"
+          [class.px-2]="compact"
+          [class.py-1]="compact"
+          [class.text-sm]="compact"
         >
           <option [value]="0.75">0.75x</option>
           <option [value]="1.0">1x</option>
@@ -47,9 +70,11 @@ import { AudioPlayerService } from '../../../core/services/audio-player.service'
         </select>
       </div>
 
-      <div class="text-white text-center text-sm">
-        Progress: {{ progressPercent() }}%
-      </div>
+      @if (!compact) {
+        <div class="text-white text-center text-sm">
+          Progress: {{ progressPercent() }}%
+        </div>
+      }
     </div>
   `,
   styles: [`
@@ -63,10 +88,12 @@ import { AudioPlayerService } from '../../../core/services/audio-player.service'
     }
   `]
 })
-export class AudioControlsComponent implements OnInit, OnDestroy {
+export class AudioControlsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() audioUrl?: string;
   /** When true, playback starts automatically when the track is loaded. */
   @Input() autoPlay = false;
+  /** When true, renders a slim single-row bar (e.g. for fixed bottom on surah page). */
+  @Input() compact = false;
 
   audioState = this.audioService.state;
 
@@ -80,6 +107,13 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.audioUrl) {
+      this.audioService.loadAudio(this.audioUrl, { autoPlay: this.autoPlay });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const urlChange = changes['audioUrl'];
+    if (urlChange && this.audioUrl && urlChange.previousValue !== this.audioUrl) {
       this.audioService.loadAudio(this.audioUrl, { autoPlay: this.autoPlay });
     }
   }

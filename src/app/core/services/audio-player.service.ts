@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export interface AudioState {
   isPlaying: boolean;
@@ -7,6 +8,10 @@ export interface AudioState {
   playbackRate: number;
   currentVerseIndex: number;
   loading: boolean;
+}
+
+export interface LoadAudioOptions {
+  autoPlay?: boolean;
 }
 
 @Injectable({
@@ -24,9 +29,13 @@ export class AudioPlayerService {
     loading: false
   });
 
+  /** Fires when the current audio finishes. Use for looping or auto-advance. */
+  readonly onEnded = new Subject<void>();
+
   readonly state = this.audioState.asReadonly();
 
-  loadAudio(url: string): void {
+  loadAudio(url: string, options?: LoadAudioOptions): void {
+    const autoPlay = options?.autoPlay ?? false;
     this.audioState.update(s => ({ ...s, loading: true }));
 
     if (this.audio) {
@@ -42,6 +51,11 @@ export class AudioPlayerService {
         duration: this.audio?.duration ?? 0,
         loading: false
       }));
+      if (autoPlay) {
+        this.audio?.play().then(() => {
+          this.audioState.update(s => ({ ...s, isPlaying: true }));
+        }).catch(() => {});
+      }
     });
 
     this.audio.addEventListener('timeupdate', () => {
@@ -57,6 +71,7 @@ export class AudioPlayerService {
         isPlaying: false,
         currentTime: 0
       }));
+      this.onEnded.next();
     });
 
     this.audio.addEventListener('error', () => {

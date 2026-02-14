@@ -17,15 +17,15 @@ import { Hadith } from '../../../core/models/hadith.model';
           <p class="text-gray-500 mt-4">— {{ hadith()!.reference }}</p>
         </div>
 
-        <div class="bg-purple-50 p-6 rounded-2xl mb-6 border-l-4 border-purple-500">
-          <h3 class="text-xl font-bold text-primary mb-2">📖 Story</h3>
-          <p class="text-gray-700 leading-relaxed">{{ hadith()!.story }}</p>
-        </div>
+        <details class="bg-purple-50 rounded-2xl mb-4 border-l-4 border-purple-500">
+          <summary class="p-4 cursor-pointer font-semibold text-primary">📖 Story</summary>
+          <p class="text-gray-700 leading-relaxed px-4 pb-4">{{ hadith()!.story }}</p>
+        </details>
 
-        <div class="bg-green-50 p-6 rounded-2xl border-l-4 border-primary">
-          <h3 class="text-xl font-bold text-primary mb-2">✨ Lesson for you</h3>
-          <p class="text-gray-700 leading-relaxed">{{ hadith()!.lesson }}</p>
-        </div>
+        <details class="bg-green-50 rounded-2xl border-l-4 border-primary">
+          <summary class="p-4 cursor-pointer font-semibold text-primary">✨ Lesson for you</summary>
+          <p class="text-gray-700 leading-relaxed px-4 pb-4">{{ hadith()!.lesson }}</p>
+        </details>
       </div>
     }
   `

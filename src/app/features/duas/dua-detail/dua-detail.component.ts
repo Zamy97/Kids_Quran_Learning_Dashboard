@@ -34,14 +34,14 @@ import { Dua } from '../../../core/models/dua.model';
           <p class="text-lg text-gray-600">{{ dua()!.translation }}</p>
         </div>
 
-        <div class="bg-yellow-50 border-l-4 border-accent p-6 rounded-2xl mb-6">
-          <h3 class="text-xl font-bold text-primary mb-2">💡 Why we say this</h3>
-          <p class="text-gray-700 leading-relaxed">{{ dua()!.explanation }}</p>
-        </div>
-
         @if (dua()!.audioUrl) {
-          <app-audio-controls [audioUrl]="dua()!.audioUrl" />
+          <app-audio-controls [audioUrl]="dua()!.audioUrl" [autoPlay]="true" />
         }
+
+        <details class="bg-yellow-50 border-l-4 border-accent rounded-2xl mt-4">
+          <summary class="p-4 cursor-pointer font-semibold text-primary">💡 Why we say this</summary>
+          <p class="text-gray-700 leading-relaxed px-4 pb-4">{{ dua()!.explanation }}</p>
+        </details>
       </div>
     }
   `

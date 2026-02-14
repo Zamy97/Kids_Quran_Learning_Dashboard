@@ -1,10 +1,14 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, computed, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuranDataService } from '../../../core/services/quran-data.service';
+import { AudioPlayerService } from '../../../core/services/audio-player.service';
 import { AudioControlsComponent } from '../../../shared/components/audio-controls/audio-controls.component';
 import { Surah } from '../../../core/models/surah.model';
+import { Subscription } from 'rxjs';
 
 type ViewMode = 'listen' | 'read';
+
+const VERSE_AUTO_ADVANCE_SEC = 12;
 
 @Component({
   selector: 'app-surah-detail',
@@ -12,101 +16,75 @@ type ViewMode = 'listen' | 'read';
   imports: [AudioControlsComponent],
   template: `
     @if (surah()) {
-      <div class="max-w-6xl mx-auto px-4 py-6">
-        <button
-          (click)="goBack()"
-          class="mb-6 px-6 py-3 bg-gray-500 text-white rounded-full
-                 hover:bg-gray-600 transition-colors font-semibold"
-        >
-          ← Back to List
-        </button>
-
-        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg mb-6">
-          <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">
-            {{ surah()!.nameAr }} - {{ surah()!.nameEn }}
+      <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col min-h-[calc(100vh-12rem)]">
+        <div class="flex items-center justify-between gap-4 mb-4 flex-shrink-0">
+          <button
+            (click)="goBack()"
+            class="px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition-colors font-semibold"
+          >
+            ← Back
+          </button>
+          <h2 class="text-xl md:text-2xl font-bold text-primary truncate">
+            {{ surah()!.nameAr }} · {{ surah()!.nameEn }}
           </h2>
-          <div class="text-gray-600 space-y-1">
-            <p><strong>Meaning:</strong> {{ surah()!.meaning }}</p>
-            <p><strong>Verses:</strong> {{ surah()!.verses }}</p>
-            <p><strong>Revealed in:</strong> {{ surah()!.revelation }}</p>
+          <div class="flex gap-2">
+            <button
+              (click)="viewMode.set('listen')"
+              [class.bg-primary]="viewMode() === 'listen'"
+              [class.text-white]="viewMode() === 'listen'"
+              [class.bg-gray-200]="viewMode() !== 'listen'"
+              class="px-4 py-2 rounded-full font-bold text-sm transition-all"
+            >
+              🎧 Listen
+            </button>
+            <button
+              (click)="viewMode.set('read')"
+              [class.bg-primary]="viewMode() === 'read'"
+              [class.text-white]="viewMode() === 'read'"
+              [class.bg-gray-200]="viewMode() !== 'read'"
+              class="px-4 py-2 rounded-full font-bold text-sm transition-all"
+            >
+              📖 Read
+            </button>
           </div>
         </div>
 
-        <div class="bg-gradient-to-r from-yellow-50 to-orange-50
-                    p-6 rounded-2xl mb-6 border-l-4 border-accent">
-          <h3 class="text-2xl font-bold text-primary mb-3">📖 Story & Background</h3>
-          <p class="text-gray-700 leading-relaxed text-lg">{{ surah()!.story }}</p>
-        </div>
-
-        <div class="flex gap-4 mb-6 justify-center">
-          <button
-            (click)="viewMode.set('listen')"
-            [class.bg-primary]="viewMode() === 'listen'"
-            [class.text-white]="viewMode() === 'listen'"
-            [class.bg-gray-200]="viewMode() !== 'listen'"
-            class="px-8 py-4 rounded-full font-bold text-lg transition-all
-                   hover:scale-105"
-          >
-            🎧 Listen Mode
-          </button>
-          <button
-            (click)="viewMode.set('read')"
-            [class.bg-primary]="viewMode() === 'read'"
-            [class.text-white]="viewMode() === 'read'"
-            [class.bg-gray-200]="viewMode() !== 'read'"
-            class="px-8 py-4 rounded-full font-bold text-lg transition-all
-                   hover:scale-105"
-          >
-            📖 Read Mode
-          </button>
-        </div>
+        <details class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border-l-4 border-accent mb-4 flex-shrink-0">
+          <summary class="p-3 cursor-pointer font-semibold text-primary">📖 Story & background</summary>
+          <p class="text-gray-700 text-sm leading-relaxed px-4 pb-4">{{ surah()!.story }}</p>
+        </details>
 
         @if (surah()!.audioUrl) {
-          <div class="mb-6">
-            <app-audio-controls [audioUrl]="surah()!.audioUrl" />
+          <div class="mb-4 flex-shrink-0">
+            <app-audio-controls [audioUrl]="surah()!.audioUrl" [autoPlay]="true" />
           </div>
         }
 
         @if (viewMode() === 'listen') {
-          <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg text-center">
-            <h3 class="text-2xl font-bold text-primary mb-6">
-              Current Verse: {{ currentVerseIndex() + 1 }} / {{ surah()!.verses }}
-            </h3>
-
+          <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg text-center flex-1 flex flex-col justify-center min-h-0">
+            <p class="text-sm text-gray-500 mb-2">Verse {{ currentVerseIndex() + 1 }} of {{ surah()!.verses }} · changes every {{ VERSE_AUTO_ADVANCE_SEC }}s</p>
             @if (currentVerse()) {
               <div class="max-w-3xl mx-auto">
-                <div class="text-4xl md:text-5xl text-primary mb-6 leading-relaxed
-                            text-right font-arabic p-6 bg-gray-50 rounded-2xl">
+                <div class="text-3xl md:text-5xl text-primary mb-4 leading-relaxed text-right font-arabic p-4 bg-gray-50 rounded-2xl">
                   {{ currentVerse()!.arabic }}
                 </div>
-
-                <div class="inline-block bg-primary text-white px-6 py-2
-                            rounded-full font-bold text-xl mb-4">
-                  Verse {{ currentVerse()!.number }}
-                </div>
-
-                <div class="text-xl md:text-2xl text-gray-700 leading-relaxed">
+                <div class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
                   {{ currentVerse()!.translation }}
                 </div>
-
-                <div class="flex gap-4 justify-center mt-8">
+                <div class="flex gap-3 justify-center">
                   <button
                     (click)="previousVerse()"
                     [disabled]="currentVerseIndex() === 0"
-                    class="px-6 py-3 bg-primary text-white rounded-full
-                           font-semibold hover:bg-primary-dark transition-colors
-                           disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="px-4 py-2 bg-primary text-white rounded-full font-semibold disabled:opacity-50"
                   >
-                    ⏮️ Previous
+                    ⏮️
                   </button>
                   <button
                     (click)="nextVerse()"
                     [disabled]="currentVerseIndex() === surah()!.verses_data.length - 1"
-                    class="px-6 py-3 bg-primary text-white rounded-full
-                           font-semibold hover:bg-primary-dark transition-colors
-                           disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="px-4 py-2 bg-primary text-white rounded-full font-semibold disabled:opacity-50"
                   >
-                    Next ⏭️
+                    ⏭️
                   </button>
                 </div>
               </div>
@@ -115,22 +93,14 @@ type ViewMode = 'listen' | 'read';
         }
 
         @if (viewMode() === 'read') {
-          <div class="space-y-4">
+          <div class="space-y-3 overflow-y-auto flex-1 min-h-0">
             @for (verse of surah()!.verses_data; track verse.number) {
-              <div class="bg-white p-6 rounded-2xl shadow-md
-                          border-r-4 border-primary hover:shadow-lg transition-shadow">
-                <div class="text-3xl md:text-4xl text-primary mb-4
-                            leading-relaxed text-right font-arabic">
+              <div class="bg-white p-4 rounded-xl shadow border-r-4 border-primary">
+                <div class="text-2xl md:text-3xl text-primary text-right font-arabic leading-relaxed">
                   {{ verse.arabic }}
-                  <span class="inline-block bg-primary text-white w-10 h-10
-                               rounded-full text-center leading-10 text-xl ml-2">
-                    {{ verse.number }}
-                  </span>
+                  <span class="inline-block bg-primary text-white w-8 h-8 rounded-full text-center leading-8 text-sm ml-2">{{ verse.number }}</span>
                 </div>
-
-                <div class="text-lg md:text-xl text-gray-700 leading-relaxed">
-                  {{ verse.translation }}
-                </div>
+                <div class="text-base md:text-lg text-gray-700 mt-2">{{ verse.translation }}</div>
               </div>
             }
           </div>
@@ -139,10 +109,15 @@ type ViewMode = 'listen' | 'read';
     }
   `
 })
-export class SurahDetailComponent implements OnInit {
+export class SurahDetailComponent implements OnInit, OnDestroy {
+  readonly VERSE_AUTO_ADVANCE_SEC = VERSE_AUTO_ADVANCE_SEC;
+
   surah = signal<Surah | null>(null);
   viewMode = signal<ViewMode>('listen');
   currentVerseIndex = signal(0);
+
+  private verseTimer: ReturnType<typeof setInterval> | null = null;
+  private endedSub: Subscription | null = null;
 
   currentVerse = computed(() => {
     const s = this.surah();
@@ -153,7 +128,8 @@ export class SurahDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private quranService: QuranDataService
+    private quranService: QuranDataService,
+    private audioService: AudioPlayerService
   ) {}
 
   ngOnInit(): void {
@@ -164,6 +140,40 @@ export class SurahDetailComponent implements OnInit {
         this.surah.set(surah);
       }
     }
+    this.startVerseAutoAdvance();
+    this.endedSub = this.audioService.onEnded.subscribe(() => this.loopSurahAudio());
+  }
+
+  ngOnDestroy(): void {
+    this.stopVerseAutoAdvance();
+    this.endedSub?.unsubscribe();
+  }
+
+  private startVerseAutoAdvance(): void {
+    this.stopVerseAutoAdvance();
+    this.verseTimer = setInterval(() => {
+      if (this.viewMode() !== 'listen') return;
+      const s = this.surah();
+      if (!s) return;
+      const next = this.currentVerseIndex() + 1;
+      if (next < s.verses_data.length) {
+        this.currentVerseIndex.set(next);
+      } else {
+        this.currentVerseIndex.set(0);
+      }
+    }, VERSE_AUTO_ADVANCE_SEC * 1000);
+  }
+
+  private stopVerseAutoAdvance(): void {
+    if (this.verseTimer) {
+      clearInterval(this.verseTimer);
+      this.verseTimer = null;
+    }
+  }
+
+  private loopSurahAudio(): void {
+    this.audioService.seek(0);
+    this.audioService.play();
   }
 
   goBack(): void {

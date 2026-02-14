@@ -65,6 +65,8 @@ import { AudioPlayerService } from '../../../core/services/audio-player.service'
 })
 export class AudioControlsComponent implements OnInit, OnDestroy {
   @Input() audioUrl?: string;
+  /** When true, playback starts automatically when the track is loaded. */
+  @Input() autoPlay = false;
 
   audioState = this.audioService.state;
 
@@ -78,7 +80,7 @@ export class AudioControlsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.audioUrl) {
-      this.audioService.loadAudio(this.audioUrl);
+      this.audioService.loadAudio(this.audioUrl, { autoPlay: this.autoPlay });
     }
   }
 

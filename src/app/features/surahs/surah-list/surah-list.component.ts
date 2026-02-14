@@ -1,28 +1,38 @@
-import { Component, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { QuranDataService } from '../../../core/services/quran-data.service';
+import { ProgressTrackerService } from '../../../core/services/progress-tracker.service';
 
 @Component({
   selector: 'app-surah-list',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   template: `
-    <div class="max-w-7xl mx-auto px-4 py-6">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-        <h2 class="text-3xl md:text-4xl font-bold text-primary">📖 Surah Library</h2>
+    <div class="max-w-7xl mx-auto px-4 py-4">
+      @if (continueSurah()) {
+        <a
+          [routerLink]="['/surahs', continueSurah()!.id]"
+          class="block mb-6 p-6 rounded-2xl bg-gradient-to-r from-primary to-primary-light text-white shadow-lg hover:scale-[1.02] transition-transform no-underline"
+        >
+          <span class="text-sm font-semibold opacity-90">Continue practicing</span>
+          <p class="text-2xl md:text-3xl font-bold mt-1">{{ continueSurah()!.nameAr }} · {{ continueSurah()!.nameEn }}</p>
+          <p class="mt-2 opacity-90">Tap to open → play and listen. Verse changes every 12s.</p>
+        </a>
+      }
+
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+        <h2 class="text-2xl font-bold text-primary">📖 All surahs</h2>
         <input
           type="text"
           [(ngModel)]="searchQuery"
           (ngModelChange)="onSearch()"
-          placeholder="Search surahs..."
-          class="px-6 py-3 border-2 border-primary rounded-full text-lg
-                 focus:outline-none focus:ring-4 focus:ring-primary/20
-                 w-full md:w-auto min-w-[300px]"
+          placeholder="Search..."
+          class="px-4 py-2 border-2 border-primary rounded-full w-full md:w-64"
         />
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         @for (surah of filteredSurahs(); track surah.id) {
           <div
             (click)="openSurah(surah.id)"
@@ -75,8 +85,14 @@ export class SurahListComponent {
   searchQuery = '';
   filteredSurahs = signal(this.quranService.surahsList());
 
+  continueSurah = computed(() => {
+    const id = this.progressService.userProgress().currentSurah;
+    return this.quranService.getSurahById(id);
+  });
+
   constructor(
     private quranService: QuranDataService,
+    private progressService: ProgressTrackerService,
     private router: Router
   ) {}
 

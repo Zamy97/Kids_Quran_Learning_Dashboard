@@ -35,11 +35,18 @@ import { Dua } from '../../../core/models/dua.model';
           <p class="text-lg text-gray-600">{{ dua()!.translation }}</p>
         </div>
 
-        <!-- Read aloud (TTS) for memorization -->
+        <!-- Human recitation when MP3 is in assets/audio/duas/{id}.mp3 -->
+        @if (dua()!.audioUrl) {
+          <div class="mb-6">
+            <app-audio-controls [audioUrl]="dua()!.audioUrl" [autoPlay]="true" />
+          </div>
+        }
+
+        <!-- Fallback: Read aloud (TTS) when no recording or for English -->
         @if (speechService.supported) {
           <div class="bg-primary/10 border-2 border-primary rounded-2xl p-6 mb-6">
-            <h3 class="text-lg font-bold text-primary mb-3">🔊 Listen & memorize</h3>
-            <p class="text-gray-600 text-sm mb-4">Hear the du'a in Arabic, then in English.</p>
+            <h3 class="text-lg font-bold text-primary mb-3">🔊 Read aloud</h3>
+            <p class="text-gray-600 text-sm mb-4">Hear the du'a in Arabic, then in English (uses device voice).</p>
             <div class="flex flex-wrap gap-3">
               <button
                 (click)="readAloud()"
@@ -63,10 +70,6 @@ import { Dua } from '../../../core/models/dua.model';
               }
             </div>
           </div>
-        }
-
-        @if (dua()!.audioUrl) {
-          <app-audio-controls [audioUrl]="dua()!.audioUrl" [autoPlay]="true" />
         }
 
         <details class="bg-yellow-50 border-l-4 border-accent rounded-2xl mt-4">

@@ -19,7 +19,7 @@ module.exports = {
         background: '#F5F5F5',
       },
       fontFamily: {
-        arabic: ['Traditional Arabic', 'Arial', 'sans-serif'],
+        arabic: ['Amiri', 'Traditional Arabic', 'serif'],
       },
       borderRadius: {
         'app': '16px',

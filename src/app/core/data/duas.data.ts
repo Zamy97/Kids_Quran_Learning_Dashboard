@@ -11,7 +11,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',
     transliteration: "Alhamdulillahi alladhi ahvana ba'da ma amatana wa ilayhin-nushur",
     translation: 'Praise be to Allah who gave us life after He gave us death, and to Him is the resurrection',
-    explanation: 'We thank Allah for another day of life. Every morning is a new gift from Him!'
+    explanation: 'We thank Allah for another day of life. Every morning is a new gift from Him!',
+    audioUrl: 'assets/audio/duas/waking-up.mp3'
   },
   {
     id: 'before-sleeping',
@@ -22,7 +23,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',
     transliteration: 'Bismika Allahumma amutu wa ahya',
     translation: 'In Your name, O Allah, I die and I live',
-    explanation: 'We remember that only Allah gives us life and takes it. We sleep safely in His care.'
+    explanation: 'We remember that only Allah gives us life and takes it. We sleep safely in His care.',
+    audioUrl: 'assets/audio/duas/before-sleeping.mp3'
   },
   {
     id: 'entering-bathroom',
@@ -33,7 +35,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبْثِ وَالْخَبَائِثِ',
     transliteration: "Allahumma inni a'udhu bika min al-khubthi wal-khaba'ith",
     translation: 'O Allah, I seek refuge in You from male and female evil spirits',
-    explanation: 'We ask Allah to protect us from harm and to keep us clean in body and heart.'
+    explanation: 'We ask Allah to protect us from harm and to keep us clean in body and heart.',
+    audioUrl: 'assets/audio/duas/entering-bathroom.mp3'
   },
   {
     id: 'leaving-bathroom',
@@ -44,7 +47,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'غُفْرَانَكَ',
     transliteration: 'Ghufranak',
     translation: 'I seek Your forgiveness',
-    explanation: 'We ask Allah to forgive us and to bless us with purity.'
+    explanation: 'We ask Allah to forgive us and to bless us with purity.',
+    audioUrl: 'assets/audio/duas/leaving-bathroom.mp3'
   },
   {
     id: 'entering-home',
@@ -55,7 +59,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا',
     transliteration: 'Bismillahi walajna wa bismillahi kharajna wa ala Allahi rabbina tawakkalna',
     translation: 'In the name of Allah we enter and in the name of Allah we leave, and upon our Lord we rely',
-    explanation: 'We remember Allah when we enter our home so that He blesses it and keeps us safe.'
+    explanation: 'We remember Allah when we enter our home so that He blesses it and keeps us safe.',
+    audioUrl: 'assets/audio/duas/entering-home.mp3'
   },
   {
     id: 'leaving-home',
@@ -66,7 +71,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
     transliteration: 'Bismillahi tawakkaltu ala Allahi wa la hawla wa la quwwata illa billah',
     translation: 'In the name of Allah I place my trust in Allah, and there is no power or strength except with Allah',
-    explanation: 'We ask Allah to protect us whenever we go out and to bring us back safely.'
+    explanation: 'We ask Allah to protect us whenever we go out and to bring us back safely.',
+    audioUrl: 'assets/audio/duas/leaving-home.mp3'
   },
   {
     id: 'wearing-new-clothes',
@@ -77,7 +83,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ',
     transliteration: "Alhamdulillahi alladhi kasani hadha wa razaqanihi min ghayri hawlin minni wa la quwwah",
     translation: 'Praise be to Allah who has clothed me with this and provided it for me without any might or power from myself',
-    explanation: 'We thank Allah for the blessing of clothes and remember that all good things come from Him.'
+    explanation: 'We thank Allah for the blessing of clothes and remember that all good things come from Him.',
+    audioUrl: 'assets/audio/duas/wearing-new-clothes.mp3'
   },
   {
     id: 'looking-in-mirror',
@@ -88,7 +95,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ أَحْسَنْتَ خَلْقِي فَحَسِّنْ خُلُقِي',
     transliteration: 'Allahumma ahsanta khalqi fa hassin khuluqi',
     translation: 'O Allah, as You have made my creation good, make my character good too',
-    explanation: 'We ask Allah to make our inside as beautiful as He made our outside—by having good manners and a good heart.'
+    explanation: 'We ask Allah to make our inside as beautiful as He made our outside—by having good manners and a good heart.',
+    audioUrl: 'assets/audio/duas/looking-in-mirror.mp3'
   },
   // —— Food ——
   {
@@ -100,7 +108,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'بِسْمِ اللَّهِ',
     transliteration: 'Bismillah',
     translation: 'In the name of Allah',
-    explanation: 'When we say Bismillah before eating, we remember that all our food comes from Allah. It makes our food blessed and keeps Shaytan away from our meal!'
+    explanation: 'When we say Bismillah before eating, we remember that all our food comes from Allah. It makes our food blessed and keeps Shaytan away from our meal!',
+    audioUrl: 'assets/audio/duas/before-eating.mp3'
   },
   {
     id: 'after-eating',
@@ -111,7 +120,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي وَسَقَانِي',
     transliteration: "Alhamdulillahi alladhi at'amani wa saqani",
     translation: 'Praise be to Allah who has fed me and given me drink',
-    explanation: 'We thank Allah for the food and drink He gave us. Being grateful is very important in Islam!'
+    explanation: 'We thank Allah for the food and drink He gave us. Being grateful is very important in Islam!',
+    audioUrl: 'assets/audio/duas/after-eating.mp3'
   },
   {
     id: 'before-drinking-milk',
@@ -122,7 +132,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ بَارِكْ لَنَا فِيهِ وَزِدْنَا مِنْهُ',
     transliteration: 'Allahumma barik lana fihi wa zidna minhu',
     translation: 'O Allah, bless it for us and give us more of it',
-    explanation: 'The Prophet ﷺ taught us this dua when drinking milk. We ask Allah to make it beneficial and to provide for us.'
+    explanation: 'The Prophet ﷺ taught us this dua when drinking milk. We ask Allah to make it beneficial and to provide for us.',
+    audioUrl: 'assets/audio/duas/before-drinking-milk.mp3'
   },
   // —— Travel ——
   {
@@ -134,7 +145,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ',
     transliteration: "Subhanalladhi sakhkhara lana hadha wa ma kunna lahu muqrinin wa inna ila rabbina lamunqalibun",
     translation: 'Glory to Him who has subjected this to us, and we could not have done it by ourselves. And indeed to our Lord we will return',
-    explanation: 'We thank Allah for the car, bus, or plane that takes us places and remember that we will return to Him one day.'
+    explanation: 'We thank Allah for the car, bus, or plane that takes us places and remember that we will return to Him one day.',
+    audioUrl: 'assets/audio/duas/starting-journey.mp3'
   },
   {
     id: 'travel-supplication',
@@ -145,7 +157,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ',
     transliteration: "Allahumma hawwin alayna safarana hadha watwi anna bu'dahu",
     translation: 'O Allah, make this journey easy for us and shorten its distance for us',
-    explanation: 'We ask Allah to make our trip easy, safe, and not too tiring.'
+    explanation: 'We ask Allah to make our trip easy, safe, and not too tiring.',
+    audioUrl: 'assets/audio/duas/travel-supplication.mp3'
   },
   {
     id: 'returning-from-travel',
@@ -156,7 +169,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ',
     transliteration: 'Ahibuna taibuna abiduna li rabbina hamidun',
     translation: 'We return, we repent, we worship, and we praise our Lord',
-    explanation: 'We thank Allah for a safe return and remember that we worship Him wherever we go.'
+    explanation: 'We thank Allah for a safe return and remember that we worship Him wherever we go.',
+    audioUrl: 'assets/audio/duas/returning-from-travel.mp3'
   },
   // —— Special (Masjid, nature, family, etc.) ——
   {
@@ -168,7 +182,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',
     transliteration: 'Allahumma aftah li abwaba rahmatik',
     translation: 'O Allah, open for me the doors of Your mercy',
-    explanation: 'We ask Allah to bless our time in the masjid and to accept our worship.'
+    explanation: 'We ask Allah to bless our time in the masjid and to accept our worship.',
+    audioUrl: 'assets/audio/duas/entering-masjid.mp3'
   },
   {
     id: 'leaving-masjid',
@@ -179,7 +194,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',
     transliteration: 'Allahumma inni asaluka min fadlik',
     translation: 'O Allah, I ask You from Your bounty',
-    explanation: 'We ask Allah to reward us for coming to the masjid and to keep us close to Him.'
+    explanation: 'We ask Allah to reward us for coming to the masjid and to keep us close to Him.',
+    audioUrl: 'assets/audio/duas/leaving-masjid.mp3'
   },
   {
     id: 'hearing-thunder',
@@ -190,7 +206,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلَائِكَةُ مِنْ خِيفَتِهِ',
     transliteration: 'Subhanalladhi yusabbihu ar-radu bihamdihi wal-malaikatu min khifatih',
     translation: 'Glory be to Him whom thunder glorifies with His praise, and so do the angels out of fear of Him',
-    explanation: 'We remember that thunder and everything in the sky glorify Allah. He is the Most Powerful.'
+    explanation: 'We remember that thunder and everything in the sky glorify Allah. He is the Most Powerful.',
+    audioUrl: 'assets/audio/duas/hearing-thunder.mp3'
   },
   {
     id: 'when-it-rains',
@@ -201,7 +218,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'اللَّهُمَّ صَيِّبًا نَافِعًا',
     transliteration: 'Allahumma sayyiban nafia',
     translation: 'O Allah, let it be a beneficial rain',
-    explanation: 'We ask Allah to make the rain good for the earth, the animals, and the people.'
+    explanation: 'We ask Allah to make the rain good for the earth, the animals, and the people.',
+    audioUrl: 'assets/audio/duas/when-it-rains.mp3'
   },
   {
     id: 'dua-for-parents',
@@ -212,7 +230,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',
     transliteration: 'Rabbir hamhuma kama rabbayanee sagheera',
     translation: 'My Lord, have mercy upon them as they brought me up when I was small',
-    explanation: 'We ask Allah to be kind to our parents and to reward them for taking care of us when we were little.'
+    explanation: 'We ask Allah to be kind to our parents and to reward them for taking care of us when we were little.',
+    audioUrl: 'assets/audio/duas/dua-for-parents.mp3'
   },
   {
     id: 'when-in-difficulty',
@@ -223,7 +242,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ',
     transliteration: 'La ilaha illa anta subhanaka inni kuntu minaz-zalimin',
     translation: 'There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers',
-    explanation: 'This is the dua of Prophet Yunus (Jonah) when he was in difficulty. Allah answered him, and He can answer us too when we call on Him.'
+    explanation: 'This is the dua of Prophet Yunus (Jonah) when he was in difficulty. Allah answered him, and He can answer us too when we call on Him.',
+    audioUrl: 'assets/audio/duas/when-in-difficulty.mp3'
   },
   {
     id: 'seeking-knowledge',
@@ -234,7 +254,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'رَبِّ زِدْنِي عِلْمًا',
     transliteration: 'Rabbi zidni ilma',
     translation: 'My Lord, increase me in knowledge',
-    explanation: 'We ask Allah to help us learn and understand. He loves those who seek knowledge!'
+    explanation: 'We ask Allah to help us learn and understand. He loves those who seek knowledge!',
+    audioUrl: 'assets/audio/duas/seeking-knowledge.mp3'
   },
   {
     id: 'after-sneezing',
@@ -245,7 +266,8 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'الْحَمْدُ لِلَّهِ',
     transliteration: 'Alhamdulillah',
     translation: 'Praise be to Allah',
-    explanation: 'We thank Allah for our health. When someone else sneezes and says this, we reply: Yarhamukallah (May Allah have mercy on you).'
+    explanation: 'We thank Allah for our health. When someone else sneezes and says this, we reply: Yarhamukallah (May Allah have mercy on you).',
+    audioUrl: 'assets/audio/duas/after-sneezing.mp3'
   },
   {
     id: 'replying-to-sneezer',
@@ -256,6 +278,7 @@ export const DUAS_DATA: Dua[] = [
     arabic: 'يَرْحَمُكَ اللَّهُ',
     transliteration: 'Yarhamukallah',
     translation: 'May Allah have mercy on you',
-    explanation: 'We make a kind dua for the person who sneezed. They can then reply: Yahdikumullah (May Allah guide you).'
+    explanation: 'We make a kind dua for the person who sneezed. They can then reply: Yahdikumullah (May Allah guide you).',
+    audioUrl: 'assets/audio/duas/replying-to-sneezer.mp3'
   }
 ];

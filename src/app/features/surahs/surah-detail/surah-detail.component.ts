@@ -9,8 +9,6 @@ import { Subscription } from 'rxjs';
 
 type ViewMode = 'listen' | 'read';
 
-const VERSE_AUTO_ADVANCE_SEC = 12;
-
 /** Given audio currentTime (sec) and verse start times, return 0-based verse index. */
 function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): number {
   if (!verseStartTimes.length) return 0;
@@ -26,9 +24,9 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
   imports: [AudioControlsComponent],
   template: `
     @if (surah()) {
-      <div class="flex flex-col h-[calc(100vh-11rem)] min-h-0 max-w-7xl mx-auto">
+      <div class="flex flex-col h-[calc(100vh-7.5rem)] min-h-0 max-w-7xl mx-auto">
         <!-- Minimal top bar -->
-        <div class="flex items-center justify-between gap-3 px-3 py-2 flex-shrink-0 bg-white/80 backdrop-blur border-b">
+        <div class="flex items-center justify-between gap-2 px-2 py-1.5 flex-shrink-0 bg-white/80 backdrop-blur border-b">
           <button
             (click)="goBack()"
             class="px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300 font-semibold text-sm"
@@ -61,56 +59,51 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
         </div>
 
         @if (viewMode() === 'listen') {
-          <!-- Big verse display: readable from distance -->
-          <div class="flex-1 flex flex-col justify-center items-center px-4 py-6 min-h-0 overflow-auto">
+          <!-- Full-screen verse: no scroll, Arabic as large as possible -->
+          <div class="flex-1 flex flex-col justify-center items-center px-3 py-2 min-h-0 overflow-hidden">
             @if (currentVerse()) {
-              <div class="w-full max-w-5xl mx-auto text-center">
-                <p class="text-sm md:text-base text-gray-400 mb-4">
+              <div class="w-full h-full flex flex-col justify-center items-center text-center max-w-6xl mx-auto">
+                <p class="text-xs text-gray-400 mb-1 shrink-0">
                   Verse {{ currentVerse()!.number }} of {{ surah()!.verses }}
                   @if (usePerVerseAudio()) {
-                    <span class="block mt-1 text-primary font-medium">Ayah by ayah — Saood ash-Shuraym</span>
-                    <div class="flex flex-wrap items-center justify-center gap-2 mt-3">
-                      <span class="text-sm font-medium w-full text-center">Play verse:</span>
-                      @for (opt of repeatOptions; track opt.value) {
-                        <button
-                          type="button"
-                          (click)="repeatVerseCount.set(opt.value)"
-                          [class.bg-primary]="repeatVerseCount() === opt.value"
-                          [class.text-white]="repeatVerseCount() === opt.value"
-                          class="px-3 py-1.5 rounded-full text-sm font-bold border-2 border-primary transition-colors"
-                        >
-                          {{ opt.label }}
-                        </button>
-                      }
-                    </div>
+                    <span class="ml-2 text-primary">·</span>
+                    @for (opt of repeatOptions; track opt.value) {
+                      <button
+                        type="button"
+                        (click)="repeatVerseCount.set(opt.value)"
+                        [class.bg-primary]="repeatVerseCount() === opt.value"
+                        [class.text-white]="repeatVerseCount() === opt.value"
+                        class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold border border-primary"
+                      >
+                        {{ opt.label }}
+                      </button>
+                    }
                   } @else if (useSyncedVerse()) {
-                    <span class="block mt-1 text-primary font-medium">Synced to recitation</span>
-                  } @else {
-                    <span class="block mt-1">Changes every {{ VERSE_AUTO_ADVANCE_SEC }}s</span>
+                    <span class="ml-2 text-primary">Synced</span>
                   }
                 </p>
-                <div class="bg-white/90 rounded-3xl shadow-xl p-6 md:p-10 mb-6">
-                  <p class="verse-arabic text-primary text-right font-arabic leading-loose mb-6">
+                <div class="bg-white/90 rounded-2xl shadow-xl p-4 md:p-6 flex-1 min-h-0 flex flex-col justify-center w-full">
+                  <p class="verse-arabic text-primary text-right font-arabic leading-tight mb-2">
                     {{ currentVerse()!.arabic }}
                   </p>
                 </div>
-                <p class="verse-translation text-gray-800 leading-relaxed max-w-4xl mx-auto mb-8">
+                <p class="verse-translation text-gray-700 leading-snug max-w-4xl mx-auto mt-2 shrink-0">
                   {{ currentVerse()!.translation }}
                 </p>
-                <div class="flex gap-4 justify-center">
+                <div class="flex gap-2 mt-2 shrink-0">
                   <button
                     (click)="previousVerse()"
                     [disabled]="currentVerseIndex() === 0"
-                    class="px-5 py-3 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-lg"
+                    class="px-4 py-2 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-sm"
                   >
-                    ⏮️ Previous
+                    ⏮️
                   </button>
                   <button
                     (click)="nextVerse()"
                     [disabled]="currentVerseIndex() === surah()!.verses_data.length - 1"
-                    class="px-5 py-3 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-lg"
+                    class="px-4 py-2 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-sm"
                   >
-                    Next ⏭️
+                    ⏭️
                   </button>
                 </div>
               </div>
@@ -142,18 +135,17 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
     }
   `,
   styles: [`
-    /* Large, distance-readable verse text (scales with viewport) */
+    /* As large as possible without scrolling; viewport-based */
     .verse-arabic {
-      font-size: clamp(2rem, 5vw + 1.5rem, 4.5rem);
+      font-size: clamp(2.5rem, 14vmin, 8rem);
+      line-height: 1.3;
     }
     .verse-translation {
-      font-size: clamp(1.25rem, 2.5vw + 0.75rem, 2.25rem);
+      font-size: clamp(0.95rem, 2.2vmin, 1.35rem);
     }
   `]
 })
 export class SurahDetailComponent implements OnInit, OnDestroy {
-  readonly VERSE_AUTO_ADVANCE_SEC = VERSE_AUTO_ADVANCE_SEC;
-
   /** 1 = once, 2/3/5 = that many times, 0 = until I skip (infinite). */
   readonly repeatOptions: { value: number; label: string }[] = [
     { value: 1, label: '1 time' },
@@ -171,10 +163,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
   private playsThisVerse = signal(0);
   /** Used when verseAudioBaseUrl is set (ayah-by-ayah playback). */
   private verseIndexByAyah = signal(0);
-  /** Only used when no verse timings and no verseAudioBaseUrl (timer mode). */
-  private verseIndexByTimer = signal(0);
 
-  private verseTimer: ReturnType<typeof setInterval> | null = null;
   private endedSub: Subscription | null = null;
 
   /** Per-verse MP3 URLs (EveryAyah style). Empty when not using verse-by-verse. */
@@ -192,7 +181,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
     return !!s?.verseStartTimes?.length && !this.usePerVerseAudio();
   });
 
-  /** Displayed verse index: from ayah index, or audio time when synced, else from timer. */
+  /** Displayed verse index: from ayah index, or audio time when synced, else 0. */
   currentVerseIndex = computed(() => {
     const s = this.surah();
     if (!s) return 0;
@@ -202,7 +191,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       const t = this.audioService.state().currentTime;
       return getVerseIndexForTime(t, times);
     }
-    return this.verseIndexByTimer();
+    return 0;
   });
 
   /** URL passed to audio controls: current verse MP3 or full surah. */
@@ -235,11 +224,6 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
         this.surah.set(surah);
       }
     }
-    const s = this.surah();
-    const useAyah = s && buildVerseAudioUrls(s).length > 0;
-    if (!useAyah && !s?.verseStartTimes?.length) {
-      this.startVerseAutoAdvance();
-    }
     this.endedSub = this.audioService.onEnded.subscribe(() => this.onAudioEnded());
   }
 
@@ -266,30 +250,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.stopVerseAutoAdvance();
     this.endedSub?.unsubscribe();
-  }
-
-  private startVerseAutoAdvance(): void {
-    this.stopVerseAutoAdvance();
-    this.verseTimer = setInterval(() => {
-      if (this.viewMode() !== 'listen') return;
-      const s = this.surah();
-      if (!s) return;
-      const next = this.verseIndexByTimer() + 1;
-      if (next < s.verses_data.length) {
-        this.verseIndexByTimer.set(next);
-      } else {
-        this.verseIndexByTimer.set(0);
-      }
-    }, VERSE_AUTO_ADVANCE_SEC * 1000);
-  }
-
-  private stopVerseAutoAdvance(): void {
-    if (this.verseTimer) {
-      clearInterval(this.verseTimer);
-      this.verseTimer = null;
-    }
   }
 
   private loopSurahAudio(): void {
@@ -311,8 +272,6 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       this.verseIndexByAyah.set(newIdx);
     } else if (s.verseStartTimes?.length) {
       this.audioService.seek(s.verseStartTimes[newIdx]);
-    } else {
-      this.verseIndexByTimer.set(newIdx);
     }
   }
 
@@ -326,8 +285,6 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       this.verseIndexByAyah.set(newIdx);
     } else if (s.verseStartTimes?.length) {
       this.audioService.seek(s.verseStartTimes[newIdx]);
-    } else {
-      this.verseIndexByTimer.set(newIdx);
     }
   }
 }

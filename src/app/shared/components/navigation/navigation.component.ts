@@ -12,7 +12,7 @@ interface NavItem {
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   template: `
-    <nav class="bg-white shadow-md sticky top-[88px] md:top-[104px] z-40">
+    <nav class="bg-white shadow-md sticky top-[52px] z-40">
       <div class="max-w-7xl mx-auto px-2 py-3">
         <div class="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide justify-center">
           @for (item of navItems; track item.path) {

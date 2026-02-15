@@ -24,7 +24,7 @@ export class AudioPlayerService {
     isPlaying: false,
     currentTime: 0,
     duration: 0,
-    playbackRate: 1.0,
+    playbackRate: 0.75,
     currentVerseIndex: 0,
     loading: false
   });
@@ -44,6 +44,7 @@ export class AudioPlayerService {
     }
 
     this.audio = new Audio(url);
+    this.audio.playbackRate = this.audioState().playbackRate;
 
     this.audio.addEventListener('loadedmetadata', () => {
       this.audioState.update(s => ({
@@ -133,7 +134,7 @@ export class AudioPlayerService {
       isPlaying: false,
       currentTime: 0,
       duration: 0,
-      playbackRate: 1.0,
+      playbackRate: this.audioState().playbackRate,
       currentVerseIndex: 0,
       loading: false
     });

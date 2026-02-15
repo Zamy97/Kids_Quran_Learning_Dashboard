@@ -5,17 +5,13 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
   selector: 'app-header',
   standalone: true,
   template: `
-    <header class="bg-gradient-to-r from-primary to-primary-light text-white shadow-lg sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 py-4 md:py-6">
+    <header class="bg-gradient-to-r from-primary to-primary-light text-white shadow sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-3 py-2">
         <div class="flex justify-between items-center">
-          <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-2">
-            🌙 Fatimah's Quran Journey 🌙
-          </h1>
-          <div class="bg-white/20 backdrop-blur-md px-4 py-2 md:px-6 md:py-3 rounded-full">
-            <span class="text-2xl md:text-3xl font-extrabold text-accent">
-              {{ memorizedCount() }}
-            </span>
-            <span class="ml-2 text-sm md:text-base font-semibold">Surahs Memorized! 🌟</span>
+          <span class="text-lg font-bold">📖 Quran</span>
+          <div class="bg-white/20 backdrop-blur px-3 py-1.5 rounded-full text-sm">
+            <span class="text-xl font-extrabold text-accent">{{ memorizedCount() }}</span>
+            <span class="ml-1.5 font-semibold">memorized</span>
           </div>
         </div>
       </div>

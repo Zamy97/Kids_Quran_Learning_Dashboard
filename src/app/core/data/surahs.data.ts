@@ -25,6 +25,103 @@ export const SURAHS_DATA: Surah[] = [
     ]
   },
   {
+    id: 'al-adiyat',
+    number: 100,
+    nameAr: 'العاديات',
+    nameEn: 'Al-Adiyat',
+    meaning: 'The Chargers',
+    verses: 11,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Adiyat was revealed in Makkah. It describes horses that run in the cause of Allah—reminding us of the beauty and power Allah has created. It also warns that people are often ungrateful to Allah and love wealth too much. The surah teaches us to be grateful and to remember that Allah knows everything in our hearts.',
+    audioUrl: 'assets/audio/surahs/al-adiyat.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'وَٱلْعَٰدِيَٰتِ ضَبْحًا', translation: 'By the galloping, panting steeds' },
+      { number: 2, arabic: 'فَٱلْمُورِيَٰتِ قَدْحًا', translation: 'Striking sparks of fire' },
+      { number: 3, arabic: 'فَٱلْمُغِيرَٰتِ صُبْحًا', translation: 'Raiding at dawn' },
+      { number: 4, arabic: 'فَأَثَرْنَ بِهِۦ نَقْعًا', translation: 'Then raising clouds of dust' },
+      { number: 5, arabic: 'فَوَسَطْنَ بِهِۦ جَمْعًا', translation: 'Plunging into the midst of the enemy' },
+      { number: 6, arabic: 'إِنَّ ٱلْإِنسَٰنَ لِرَبِّهِۦ لَكَنودٌ', translation: 'Indeed, mankind is ungrateful to his Lord' },
+      { number: 7, arabic: 'وَإِنَّهُۥ عَلَىٰ ذَٰلِكَ لَشَهِيدٌ', translation: 'And indeed, he is a witness to that' },
+      { number: 8, arabic: 'وَإِنَّهُۥ لِحُبِّ ٱلْخَيْرِ لَشَدِيدٌ', translation: 'And indeed he is intense in love of wealth' },
+      { number: 9, arabic: 'أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِى ٱلْقُبُورِ', translation: 'Does he not know that when the contents of the graves are scattered' },
+      { number: 10, arabic: 'وَحُصِّلَ مَا فِى ٱلصُّدُورِ', translation: 'And that within the chests is obtained' },
+      { number: 11, arabic: 'إِنَّ رَبَّهُم بِهِمْ يَوْمَئِذٍ لَّخَبِيرٌ', translation: 'Indeed their Lord with them, that Day, is [fully] Aware' }
+    ]
+  },
+  {
+    id: 'al-qariah',
+    number: 101,
+    nameAr: 'القارعة',
+    nameEn: "Al-Qari'ah",
+    meaning: 'The Striking Calamity',
+    verses: 11,
+    revelation: 'Makkah',
+    memorized: false,
+    story: "Surah Al-Qari'ah was revealed in Makkah. It describes the Day of Judgment—a day when hearts will pound and mountains will be like wool. People who did good will be in a pleasant life, and those who did wrong will be in a pit. It teaches us that our deeds have weight and we will be judged by Allah.",
+    audioUrl: 'assets/audio/surahs/al-qariah.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'ٱلْقَارِعَةُ', translation: 'The Striking Calamity' },
+      { number: 2, arabic: 'مَا ٱلْقَارِعَةُ', translation: 'What is the Striking Calamity?' },
+      { number: 3, arabic: 'وَمَا أَدْرَىٰكَ مَا ٱلْقَارِعَةُ', translation: 'And what can make you know what the Striking Calamity is?' },
+      { number: 4, arabic: 'يَوْمَ يَكُونُ ٱلنَّاسُ كَٱلْفَرَاشِ ٱلْمَبْثُوثِ', translation: 'It is the Day when people will be like moths scattered about' },
+      { number: 5, arabic: 'وَتَكُونُ ٱلْجِبَالُ كَٱلْعِهْنِ ٱلْمَنفُوشِ', translation: 'And the mountains will be like wool, fluffed up' },
+      { number: 6, arabic: 'فَأَمَّا مَن ثَقُلَتْ مَوَٰزِينُهُۥ', translation: 'Then as for one whose scales are heavy [with good deeds]' },
+      { number: 7, arabic: 'فَهُوَ فِى عِيشَةٍ رَّاضِيَةٍ', translation: 'He will be in a pleasant life' },
+      { number: 8, arabic: 'وَأَمَّا مَن خَفَّتْ مَوَٰزِينُهُۥ', translation: 'But as for one whose scales are light' },
+      { number: 9, arabic: 'فَأُمُّهُۥ هَاوِيَةٌ', translation: 'His refuge will be an abyss' },
+      { number: 10, arabic: 'وَمَا أَدْرَىٰكَ مَا هِيَهْ', translation: 'And what can make you know what that is?' },
+      { number: 11, arabic: 'نَارٌ حَامِيَةٌ', translation: 'It is a Fire, intensely hot' }
+    ]
+  },
+  {
+    id: 'at-takathur',
+    number: 102,
+    nameAr: 'التكاثر',
+    nameEn: 'At-Takathur',
+    meaning: 'The Rivalry in Worldly Increase',
+    verses: 8,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah At-Takathur was revealed in Makkah. It warns against being so busy competing for more wealth and more things that we forget Allah and the life after death. We will be asked about the blessings we received. It teaches kids that what matters is being good and grateful, not having the most stuff.',
+    audioUrl: 'assets/audio/surahs/at-takathur.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16, 20, 24, 28],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'أَلْهَىٰكُمُ ٱلتَّكَاثُرُ', translation: 'Competition in [worldly] increase diverts you' },
+      { number: 2, arabic: 'حَتَّىٰ زُرْتُمُ ٱلْمَقَابِرَ', translation: 'Until you visit the graveyards' },
+      { number: 3, arabic: 'كَلَّا سَوْفَ تَعْلَمُونَ', translation: 'No! You are going to know' },
+      { number: 4, arabic: 'ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ', translation: 'Then no! You are going to know' },
+      { number: 5, arabic: 'كَلَّا لَوْ تَعْلَمُونَ عِلْمَ ٱلْيَقِينِ', translation: 'No! If you only knew with knowledge of certainty' },
+      { number: 6, arabic: 'لَتَرَوُنَّ ٱلْجَحِيمَ', translation: 'You will surely see the Hellfire' },
+      { number: 7, arabic: 'ثُمَّ لَتَرَوُنَّهَا عَيْنَ ٱلْيَقِينِ', translation: 'Then you will surely see it with the eye of certainty' },
+      { number: 8, arabic: 'ثُمَّ لَتُسْـَٔلُنَّ يَوْمَئِذٍ عَنِ ٱلنَّعِيمِ', translation: 'Then you will surely be asked that Day about the pleasure [you indulged in]' }
+    ]
+  },
+  {
+    id: 'al-asr',
+    number: 103,
+    nameAr: 'العصر',
+    nameEn: 'Al-Asr',
+    meaning: 'The Declining Day',
+    verses: 3,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Asr was revealed in Makkah. It is one of the shortest surahs but very deep. Allah says that all of mankind is in loss—except those who believe, do good deeds, advise each other to truth, and advise each other to patience. It teaches us the recipe for success in this life and the next.',
+    audioUrl: 'assets/audio/surahs/al-asr.mp3',
+    verseStartTimes: [0, 3, 6],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'وَٱلْعَصْرِ', translation: 'By time' },
+      { number: 2, arabic: 'إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ', translation: 'Indeed, mankind is in loss' },
+      { number: 3, arabic: 'إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ', translation: 'Except those who have believed and done righteous deeds and advised each other to truth and advised each other to patience' }
+    ]
+  },
+  {
     id: 'al-humazah',
     number: 104,
     nameAr: 'الهُمَزة',
@@ -47,6 +144,214 @@ export const SURAHS_DATA: Surah[] = [
       { number: 7, arabic: 'الَّتِي تَطَّلِعُ عَلَى الْأَفْئِدَةِ', translation: 'Which mounts directed at the hearts' },
       { number: 8, arabic: 'إِنَّهَا عَلَيْهِمْ مُؤْصَدَةٌ', translation: 'Indeed, it will be closed over them' },
       { number: 9, arabic: 'فِي عَمَدٍ مُّمَدَّدَةٍ', translation: 'In extended columns' }
+    ]
+  },
+  {
+    id: 'al-fil',
+    number: 105,
+    nameAr: 'الفيل',
+    nameEn: 'Al-Fil',
+    meaning: 'The Elephant',
+    verses: 5,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Fil was revealed in Makkah. It tells the story of the Year of the Elephant—when an army with a huge elephant came to destroy the Kaaba in Makkah. Allah sent birds that dropped stones on them and they were defeated. It teaches us that Allah protects His House and that no one can defeat Allah\'s plan.',
+    audioUrl: 'assets/audio/surahs/al-fil.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَٰبِ ٱلْفِيلِ', translation: 'Have you not considered how your Lord dealt with the companions of the elephant?' },
+      { number: 2, arabic: 'أَلَمْ يَجْعَلْ كَيْدَهُمْ فِى تَضْلِيلٍ', translation: 'Did He not make their plan into misguidance?' },
+      { number: 3, arabic: 'وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ', translation: 'And He sent against them birds in flocks' },
+      { number: 4, arabic: 'تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ', translation: 'Striking them with stones of hard clay' },
+      { number: 5, arabic: 'فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُولٍ', translation: 'And He made them like eaten straw' }
+    ]
+  },
+  {
+    id: 'quraysh',
+    number: 106,
+    nameAr: 'قريش',
+    nameEn: 'Quraysh',
+    meaning: 'Quraysh',
+    verses: 4,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Quraysh was revealed in Makkah. It reminds the tribe of Quraysh—and us—that Allah gave them safety and food through the journeys of summer and winter. So they should worship the Lord of this House (the Kaaba). It teaches gratitude: when Allah gives us safety and provision, we should worship Him alone.',
+    audioUrl: 'assets/audio/surahs/quraysh.mp3',
+    verseStartTimes: [0, 3, 6, 9],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'لِإِيلَٰفِ قُرَيْشٍ', translation: 'For the security of Quraysh' },
+      { number: 2, arabic: 'إِيلَٰفِهِمْ رِحْلَةَ ٱلشِّتَآءِ وَٱلصَّيْفِ', translation: 'Their security during winter and summer journeys' },
+      { number: 3, arabic: 'فَلْيَعْبُدُوا۟ رَبَّ هَٰذَا ٱلْبَيْتِ', translation: 'So let them worship the Lord of this House' },
+      { number: 4, arabic: 'ٱلَّذِىٓ أَطْعَمَهُم مِّن جُوعٍ وَءَامَنَهُم مِّنْ خَوْفٍ', translation: 'Who has fed them, [saving them] from hunger and made them safe from fear' }
+    ]
+  },
+  {
+    id: 'al-maun',
+    number: 107,
+    nameAr: 'الماعون',
+    nameEn: "Al-Ma'un",
+    meaning: 'The Small Kindnesses',
+    verses: 7,
+    revelation: 'Makkah',
+    memorized: false,
+    story: "Surah Al-Ma'un was revealed in Makkah. It describes people who do wrong: they push the orphan away, they do not encourage feeding the poor, they pray but carelessly, and they refuse small kindnesses (like lending a pot). It teaches us to be kind to orphans, feed the needy, pray properly, and help others with even small things.",
+    audioUrl: 'assets/audio/surahs/al-maun.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16, 20, 24],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'أَرَءَيْتَ ٱلَّذِى يُكَذِّبُ بِٱلدِّينِ', translation: 'Have you seen the one who denies the Recompense?' },
+      { number: 2, arabic: 'فَذَٰلِكَ ٱلَّذِى يَدُعُّ ٱلْيَتِيمَ', translation: 'That is the one who drives away the orphan' },
+      { number: 3, arabic: 'وَلَا يَحُضُّ عَلَىٰ طَعَامِ ٱلْمِسْكِينِ', translation: 'And does not encourage the feeding of the poor' },
+      { number: 4, arabic: 'فَوَيْلٌ لِّلْمُصَلِّينَ', translation: 'So woe to those who pray' },
+      { number: 5, arabic: 'ٱلَّذِينَ هُمْ عَن صَلَاتِهِمْ سَاهُونَ', translation: '[But] who are heedless of their prayer' },
+      { number: 6, arabic: 'ٱلَّذِينَ هُمْ يُرَآءُونَ', translation: 'Those who make show [of their deeds]' },
+      { number: 7, arabic: 'وَيَمْنَعُونَ ٱلْمَاعُونَ', translation: 'And withhold [simple] assistance' }
+    ]
+  },
+  {
+    id: 'al-kawthar',
+    number: 108,
+    nameAr: 'الكوثر',
+    nameEn: 'Al-Kawthar',
+    meaning: 'The Abundance',
+    verses: 3,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Kawthar was revealed in Makkah. Allah gave the Prophet ﷺ a great gift called Al-Kawthar—a river in Paradise. This short surah teaches us to be thankful to Allah, to pray and make sacrifice for Him, and not to worry about those who are unkind—because we have something much better with Allah.',
+    audioUrl: 'assets/audio/surahs/al-kawthar.mp3',
+    verseStartTimes: [0, 3, 6],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ', translation: 'Indeed, We have granted you Al-Kawthar (a river in Paradise)' },
+      { number: 2, arabic: 'فَصَلِّ لِرَبِّكَ وَانْحَرْ', translation: 'So pray to your Lord and sacrifice' },
+      { number: 3, arabic: 'إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ', translation: 'Indeed, your enemy is the one cut off' }
+    ]
+  },
+  {
+    id: 'al-kafirun',
+    number: 109,
+    nameAr: 'الكافرون',
+    nameEn: 'Al-Kafirun',
+    meaning: 'The Disbelievers',
+    verses: 6,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Kafirun was revealed in Makkah. The Prophet ﷺ was told to say clearly: you have your religion and I have mine. We worship Allah alone and do not worship what others worship. It teaches us to be firm in our belief, polite but clear, and not to mix true worship with false worship.',
+    audioUrl: 'assets/audio/surahs/al-kafirun.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16, 20],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'قُلْ يَٰأَيُّهَا ٱلْكَٰفِرُونَ', translation: 'Say, "O disbelievers"' },
+      { number: 2, arabic: 'لَآ أَعْبُدُ مَا تَعْبُدُونَ', translation: 'I do not worship what you worship' },
+      { number: 3, arabic: 'وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ', translation: 'Nor are you worshippers of what I worship' },
+      { number: 4, arabic: 'وَلَآ أَنَآ عَابِدٌ مَّا عَبَدتُّمْ', translation: 'Nor will I be a worshipper of what you worship' },
+      { number: 5, arabic: 'وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ', translation: 'Nor will you be worshippers of what I worship' },
+      { number: 6, arabic: 'لَكُمْ دِينُكُمْ وَلِىَ دِينِ', translation: 'For you is your religion, and for me is my religion"' }
+    ]
+  },
+  {
+    id: 'an-nasr',
+    number: 110,
+    nameAr: 'النصر',
+    nameEn: 'An-Nasr',
+    meaning: 'The Divine Support',
+    verses: 3,
+    revelation: 'Madinah',
+    memorized: false,
+    story: 'Surah An-Nasr was revealed in Madinah. It announced that when Allah\'s help and victory come and people enter Islam in crowds, we should glorify our Lord and ask His forgiveness—for He is ever Accepting of repentance. It teaches gratitude when Allah grants success and reminds us to always turn to Him for forgiveness.',
+    audioUrl: 'assets/audio/surahs/an-nasr.mp3',
+    verseStartTimes: [0, 4, 8],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'إِذَا جَآءَ نَصْرُ ٱللَّهِ وَٱلْفَتْحُ', translation: 'When the victory of Allah has come and the conquest' },
+      { number: 2, arabic: 'وَرَأَيْتَ ٱلنَّاسَ يَدْخُلُونَ فِى دِينِ ٱللَّهِ أَفْوَاجًا', translation: 'And you see the people entering into the religion of Allah in multitudes' },
+      { number: 3, arabic: 'فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًا', translation: 'Then exalt [Him] with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of repentance' }
+    ]
+  },
+  {
+    id: 'al-masad',
+    number: 111,
+    nameAr: 'المسد',
+    nameEn: 'Al-Masad',
+    meaning: 'The Palm Fiber',
+    verses: 5,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Masad (also called Al-Lahab) was revealed in Makkah. It is about an enemy of Islam who used to harm the Prophet ﷺ and his message. Allah says his hands will perish and he will enter a fire of blazing flame. It teaches that those who oppose the truth and hurt the believers will not succeed in the end.',
+    audioUrl: 'assets/audio/surahs/al-masad.mp3',
+    verseStartTimes: [0, 3, 6, 9, 12],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'تَبَّتْ يَدَآ أَبِى لَهَبٍ وَتَبَّ', translation: 'May the hands of Abu Lahab be ruined, and ruined is he' },
+      { number: 2, arabic: 'مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ', translation: 'His wealth will not avail him or what he earned' },
+      { number: 3, arabic: 'سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ', translation: 'He will [enter to] burn in a Fire of [blazing] flame' },
+      { number: 4, arabic: 'وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ', translation: 'And his wife [as well]—the carrier of firewood' },
+      { number: 5, arabic: 'فِى جِيدِهَا حَبْلٌ مِّن مَّسَدٍ', translation: 'Around her neck is a rope of [twisted] fiber' }
+    ]
+  },
+  {
+    id: 'al-ikhlas',
+    number: 112,
+    nameAr: 'الإخلاص',
+    nameEn: 'Al-Ikhlas',
+    meaning: 'The Sincerity',
+    verses: 4,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Ikhlas was revealed in Makkah. It is one of the most important surahs because it describes who Allah is—One, Eternal, and unlike anything we know. The Prophet ﷺ said that reciting it is equal to one-third of the Quran. It teaches us pure belief in one God with no partners.',
+    audioUrl: 'assets/audio/surahs/al-ikhlas.mp3',
+    verseStartTimes: [0, 4, 8, 12],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ', translation: 'Say, "He is Allah, the One"' },
+      { number: 2, arabic: 'اللَّهُ الصَّمَدُ', translation: 'Allah, the Eternal Refuge' },
+      { number: 3, arabic: 'لَمْ يَلِدْ وَلَمْ يُولَدْ', translation: 'He neither begets nor is born' },
+      { number: 4, arabic: 'وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ', translation: 'Nor is there to Him any equivalent' }
+    ]
+  },
+  {
+    id: 'al-falaq',
+    number: 113,
+    nameAr: 'الفلق',
+    nameEn: 'Al-Falaq',
+    meaning: 'The Daybreak',
+    verses: 5,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah Al-Falaq was revealed in Makkah along with An-Nas. The Prophet ﷺ used to seek refuge in Allah from evil. This surah teaches us to ask Allah for protection from harmful things—from the darkness of night, from people who do bad magic, and from those who envy us. We learn that Allah is our Protector.',
+    audioUrl: 'assets/audio/surahs/al-falaq.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ', translation: 'Say, "I seek refuge in the Lord of daybreak"' },
+      { number: 2, arabic: 'مِنْ شَرِّ مَا خَلَقَ', translation: 'From the evil of that which He created' },
+      { number: 3, arabic: 'وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ', translation: 'And from the evil of darkness when it settles' },
+      { number: 4, arabic: 'وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ', translation: 'And from the evil of the blowers in knots' },
+      { number: 5, arabic: 'وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ', translation: 'And from the evil of an envier when he envies"' }
+    ]
+  },
+  {
+    id: 'an-nas',
+    number: 114,
+    nameAr: 'الناس',
+    nameEn: 'An-Nas',
+    meaning: 'Mankind',
+    verses: 6,
+    revelation: 'Makkah',
+    memorized: false,
+    story: 'Surah An-Nas was revealed in Makkah. It is the last surah of the Quran. Together with Al-Falaq, the Prophet ﷺ used to recite them for protection. We ask Allah—the Lord, King, and God of mankind—to protect us from the whisperings of evil, whether from jinn or people. It reminds us that only Allah can truly protect our hearts.',
+    audioUrl: 'assets/audio/surahs/an-nas.mp3',
+    verseStartTimes: [0, 4, 8, 12, 16, 20],
+    verseAudioBaseUrl: 'https://everyayah.com/data/Saood_ash-Shuraym_128kbps',
+    verses_data: [
+      { number: 1, arabic: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ', translation: 'Say, "I seek refuge in the Lord of mankind"' },
+      { number: 2, arabic: 'مَلِكِ النَّاسِ', translation: 'The King of mankind' },
+      { number: 3, arabic: 'إِلَٰهِ النَّاسِ', translation: 'The God of mankind' },
+      { number: 4, arabic: 'مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ', translation: 'From the evil of the retreating whisperer' },
+      { number: 5, arabic: 'الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ', translation: 'Who whispers [evil] into the breasts of mankind' },
+      { number: 6, arabic: 'مِنَ الْجِنَّةِ وَالنَّاسِ', translation: 'From among the jinn and mankind"' }
     ]
   }
 ];

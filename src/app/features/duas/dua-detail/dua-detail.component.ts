@@ -1,7 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuranDataService } from '../../../core/services/quran-data.service';
 import { AudioControlsComponent } from '../../../shared/components/audio-controls/audio-controls.component';
+import { SpeechService } from '../../../core/services/speech.service';
 import { Dua } from '../../../core/models/dua.model';
 
 @Component({
@@ -34,6 +35,36 @@ import { Dua } from '../../../core/models/dua.model';
           <p class="text-lg text-gray-600">{{ dua()!.translation }}</p>
         </div>
 
+        <!-- Read aloud (TTS) for memorization -->
+        @if (speechService.supported) {
+          <div class="bg-primary/10 border-2 border-primary rounded-2xl p-6 mb-6">
+            <h3 class="text-lg font-bold text-primary mb-3">🔊 Listen & memorize</h3>
+            <p class="text-gray-600 text-sm mb-4">Hear the du'a in Arabic, then in English.</p>
+            <div class="flex flex-wrap gap-3">
+              <button
+                (click)="readAloud()"
+                [disabled]="isSpeaking()"
+                class="px-6 py-3 rounded-full font-bold bg-primary text-white hover:bg-primary/90
+                       disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+              >
+                @if (isSpeaking()) {
+                  <span class="animate-pulse">Playing…</span>
+                } @else {
+                  🔊 Read aloud
+                }
+              </button>
+              @if (isSpeaking()) {
+                <button
+                  (click)="stopReading()"
+                  class="px-6 py-3 rounded-full font-bold bg-gray-600 text-white hover:bg-gray-700"
+                >
+                  Stop
+                </button>
+              }
+            </div>
+          </div>
+        }
+
         @if (dua()!.audioUrl) {
           <app-audio-controls [audioUrl]="dua()!.audioUrl" [autoPlay]="true" />
         }
@@ -46,13 +77,15 @@ import { Dua } from '../../../core/models/dua.model';
     }
   `
 })
-export class DuaDetailComponent implements OnInit {
+export class DuaDetailComponent implements OnInit, OnDestroy {
   dua = signal<Dua | null>(null);
+  isSpeaking = signal(false);
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private quranService: QuranDataService
+    private quranService: QuranDataService,
+    public speechService: SpeechService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +96,29 @@ export class DuaDetailComponent implements OnInit {
         this.dua.set(dua);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.speechService.cancel();
+  }
+
+  async readAloud(): Promise<void> {
+    const d = this.dua();
+    if (!d || this.isSpeaking()) return;
+    this.isSpeaking.set(true);
+    try {
+      await this.speechService.speakSequence([
+        { text: d.arabic, lang: 'ar' },
+        { text: d.translation, lang: 'en' }
+      ]);
+    } finally {
+      this.isSpeaking.set(false);
+    }
+  }
+
+  stopReading(): void {
+    this.speechService.cancel();
+    this.isSpeaking.set(false);
   }
 
   goBack(): void {

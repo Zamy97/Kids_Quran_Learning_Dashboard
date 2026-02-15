@@ -62,9 +62,11 @@ import { AudioPlayerService } from '../../../core/services/audio-player.service'
           [class.px-2]="compact"
           [class.py-1]="compact"
           [class.text-sm]="compact"
+          title="Playback speed"
         >
+          <option [value]="0.5">0.5x Slower</option>
           <option [value]="0.75">0.75x</option>
-          <option [value]="1.0">1x</option>
+          <option [value]="1.0">1x Normal</option>
           <option [value]="1.25">1.25x</option>
           <option [value]="1.5">1.5x</option>
         </select>

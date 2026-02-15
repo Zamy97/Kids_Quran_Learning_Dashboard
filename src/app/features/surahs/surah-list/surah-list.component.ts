@@ -17,7 +17,7 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
         >
           <span class="text-sm font-semibold opacity-90">Continue practicing</span>
           <p class="text-2xl md:text-3xl font-bold mt-1">{{ continueSurah()!.nameAr }} · {{ continueSurah()!.nameEn }}</p>
-          <p class="mt-2 opacity-90">Tap to open → play and listen. Verse changes every 12s.</p>
+          <p class="mt-2 opacity-90">Tap to open → play and listen.</p>
         </a>
       }
 

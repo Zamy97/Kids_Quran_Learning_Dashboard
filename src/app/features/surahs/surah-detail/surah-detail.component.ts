@@ -24,7 +24,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
   imports: [AudioControlsComponent],
   template: `
     @if (surah()) {
-      <div class="flex flex-col h-[calc(100vh-7.5rem)] min-h-0 max-w-7xl mx-auto">
+      <div class="flex flex-col h-[calc(100vh-5.5rem)] min-h-0 max-w-7xl mx-auto">
         <!-- Minimal top bar -->
         <div class="flex items-center justify-between gap-2 px-2 py-1.5 flex-shrink-0 bg-white/80 backdrop-blur border-b">
           <button

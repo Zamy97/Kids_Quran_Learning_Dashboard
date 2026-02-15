@@ -1,6 +1,9 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect, inject, OnDestroy } from '@angular/core';
 import { ARABIC_LETTERS_DATA } from '../../../core/data/arabic-letters.data';
 import { SIMPLE_WORDS } from '../../../core/data/arabic-letters.data';
+import { SpeechService } from '../../../core/services/speech.service';
+
+const AUTO_ADVANCE_SEC = 20;
 
 @Component({
   selector: 'app-alphabet',
@@ -50,6 +53,9 @@ import { SIMPLE_WORDS } from '../../../core/data/arabic-letters.data';
       <!-- One letter: big, no scroll -->
       <div class="flex-1 flex flex-col items-center justify-center px-4 py-6">
         <p class="text-gray-500 text-sm mb-2">{{ currentIndex() + 1 }} of {{ letters.length }}</p>
+        @if (autoAdvanceEnabled()) {
+          <p class="text-gray-500 text-sm mb-1">Next letter in {{ countdown() }}s</p>
+        }
 
         <!-- Four forms in a 2x2 grid, very large -->
         <div class="grid grid-cols-2 gap-6 md:gap-10 max-w-2xl w-full mb-6">
@@ -79,7 +85,25 @@ import { SIMPLE_WORDS } from '../../../core/data/arabic-letters.data';
           </div>
         </div>
 
-        <p class="text-[min(8vw,2.5rem)] font-bold text-primary">{{ currentLetter().name }}</p>
+        <div class="flex items-center gap-3 mt-2">
+          <p class="text-[min(8vw,2.5rem)] font-bold text-primary">{{ currentLetter().name }}</p>
+          <button type="button"
+                  class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center
+                         hover:bg-primary-dark shadow-lg transition-colors"
+                  (click)="playLetter()"
+                  aria-label="Hear pronunciation">
+            🔈
+          </button>
+        </div>
+      </div>
+
+      <!-- Auto-advance toggle -->
+      <div class="absolute top-2 left-2 z-10 flex items-center gap-2">
+        <label class="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700">
+          <input type="checkbox" [checked]="autoAdvanceEnabled()" (change)="toggleAutoAdvance()"
+                 class="w-4 h-4 rounded border-gray-300 text-primary">
+          Auto ({{ autoAdvanceSec }}s)
+        </label>
       </div>
 
       <!-- Prev / Next: big, easy to tap -->
@@ -106,16 +130,90 @@ import { SIMPLE_WORDS } from '../../../core/data/arabic-letters.data';
     </div>
   `
 })
-export class AlphabetComponent {
+export class AlphabetComponent implements OnDestroy {
+  private speech = inject(SpeechService);
+  readonly autoAdvanceSec = AUTO_ADVANCE_SEC;
   letters = ARABIC_LETTERS_DATA;
   words = SIMPLE_WORDS;
 
   currentIndex = signal(0);
   showWords = signal(false);
   wordIndex = signal(0);
+  autoAdvanceEnabled = signal(true);
+  countdown = signal(AUTO_ADVANCE_SEC);
 
   currentLetter = computed(() => this.letters[this.currentIndex()] ?? this.letters[0]);
   currentWord = computed(() => this.words[this.wordIndex()] ?? this.words[0]);
+
+  private autoAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
+  private countdownInterval: ReturnType<typeof setInterval> | null = null;
+
+  constructor() {
+    effect(() => {
+      const index = this.currentIndex();
+      const enabled = this.autoAdvanceEnabled();
+      const inWords = this.showWords();
+
+      this.speakCurrentLetter();
+
+      this.clearTimers();
+      if (!inWords && enabled) {
+        this.countdown.set(AUTO_ADVANCE_SEC);
+        this.countdownInterval = setInterval(() => {
+          this.countdown.update(c => {
+            if (c <= 1) {
+              if (this.countdownInterval) clearInterval(this.countdownInterval);
+              this.countdownInterval = null;
+              return 0;
+            }
+            return c - 1;
+          });
+        }, 1000);
+        this.autoAdvanceTimer = setTimeout(() => {
+          this.autoAdvanceTimer = null;
+          if (this.currentIndex() < this.letters.length - 1) {
+            this.next();
+          } else {
+            this.currentIndex.set(0);
+          }
+        }, AUTO_ADVANCE_SEC * 1000);
+      }
+
+      return () => this.clearTimers();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.clearTimers();
+    this.speech.cancel();
+  }
+
+  private clearTimers(): void {
+    if (this.autoAdvanceTimer) {
+      clearTimeout(this.autoAdvanceTimer);
+      this.autoAdvanceTimer = null;
+    }
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
+    }
+  }
+
+  private speakCurrentLetter(): void {
+    const letter = this.currentLetter();
+    if (letter && this.speech.supported) {
+      this.speech.speak(letter.name, 'en');
+    }
+  }
+
+  playLetter(): void {
+    this.speech.cancel();
+    this.speakCurrentLetter();
+  }
+
+  toggleAutoAdvance(): void {
+    this.autoAdvanceEnabled.update(v => !v);
+  }
 
   prev(): void {
     this.currentIndex.update(i => Math.max(0, i - 1));

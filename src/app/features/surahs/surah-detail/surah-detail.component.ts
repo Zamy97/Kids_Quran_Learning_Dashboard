@@ -70,7 +70,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                     @for (opt of repeatOptions; track opt.value) {
                       <button
                         type="button"
-                        (click)="repeatVerseCount.set(opt.value)"
+                        (click)="setRepeat(opt.value)"
                         [class.bg-primary]="repeatVerseCount() === opt.value"
                         [class.text-white]="repeatVerseCount() === opt.value"
                         class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold border border-primary"
@@ -78,6 +78,18 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                         {{ opt.label }}
                       </button>
                     }
+                    <span class="ml-2 inline-flex items-center gap-1">
+                      <label class="text-xs text-gray-500">or</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="99"
+                        [value]="customRepeatInput()"
+                        (input)="onCustomRepeatInput($event)"
+                        class="w-12 px-1.5 py-0.5 rounded border border-primary text-xs font-bold text-center"
+                      />
+                      <span class="text-xs text-gray-500">times</span>
+                    </span>
                   } @else if (useSyncedVerse()) {
                     <span class="ml-2 text-primary">Synced</span>
                   }
@@ -146,19 +158,23 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
   `]
 })
 export class SurahDetailComponent implements OnInit, OnDestroy {
-  /** 1 = once, 2/3/5 = that many times, 0 = until I skip (infinite). */
+  /** 1 = once, 5 = five times, 0 = until I skip; any other positive = custom count. */
   readonly repeatOptions: { value: number; label: string }[] = [
     { value: 1, label: '1 time' },
-    { value: 2, label: '2 times' },
-    { value: 3, label: '3 times' },
     { value: 5, label: '5 times' },
     { value: 0, label: 'Until I skip' },
   ];
 
   surah = signal<Surah | null>(null);
   viewMode = signal<ViewMode>('listen');
-  /** 1 = play once then advance; 2,3,5 = that many times; 0 = repeat until user skips. */
+  /** 1 = once; 5 = five times; 0 = until skip; any positive N = repeat N times (including custom). */
   repeatVerseCount = signal(1);
+
+  /** Value to show in the custom repeat input (empty when preset 0 is selected). */
+  customRepeatInput = computed(() => {
+    const n = this.repeatVerseCount();
+    return n >= 1 && n <= 99 ? n : '';
+  });
   /** How many times the current verse has played this round (reset on verse change). */
   private playsThisVerse = signal(0);
   /** Used when verseAudioBaseUrl is set (ayah-by-ayah playback). */
@@ -285,6 +301,19 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       this.verseIndexByAyah.set(newIdx);
     } else if (s.verseStartTimes?.length) {
       this.audioService.seek(s.verseStartTimes[newIdx]);
+    }
+  }
+
+  setRepeat(value: number): void {
+    this.repeatVerseCount.set(value);
+  }
+
+  onCustomRepeatInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const n = parseInt(input.value, 10);
+    if (!Number.isNaN(n)) {
+      const clamped = Math.min(99, Math.max(1, n));
+      this.repeatVerseCount.set(clamped);
     }
   }
 }

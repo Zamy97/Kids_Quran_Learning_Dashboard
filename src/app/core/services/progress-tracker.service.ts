@@ -38,7 +38,7 @@ export class ProgressTrackerService {
         'al-masad', 'an-nasr', 'al-kafirun', 'al-kawthar',
         'al-maun', 'quraysh', 'al-fil', 'al-asr'
       ],
-      currentSurah: 'al-humazah',
+      currentSurah: '',
       duasLearned: ['before-eating', 'after-eating', 'before-sleeping'],
       hadithsRead: [1, 2],
       lastActivity: new Date().toISOString(),

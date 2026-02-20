@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, computed, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuranDataService } from '../../../core/services/quran-data.service';
 import { AudioPlayerService } from '../../../core/services/audio-player.service';
+import { ProgressTrackerService } from '../../../core/services/progress-tracker.service';
 import { AudioControlsComponent } from '../../../shared/components/audio-controls/audio-controls.component';
 import { Surah } from '../../../core/models/surah.model';
 import { buildVerseAudioUrls } from '../../../core/utils/verse-audio.utils';
@@ -253,7 +254,8 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private quranService: QuranDataService,
-    private audioService: AudioPlayerService
+    private audioService: AudioPlayerService,
+    private progressService: ProgressTrackerService
   ) {}
 
   ngOnInit(): void {
@@ -262,6 +264,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       const surah = this.quranService.getSurahById(id);
       if (surah) {
         this.surah.set(surah);
+        this.progressService.setCurrentSurah(id);
       }
     }
     this.endedSub = this.audioService.onEnded.subscribe(() => this.onAudioEnded());

@@ -80,9 +80,11 @@ export class SurahListComponent {
   searchQuery = '';
   filteredSurahs = signal(this.quranService.surahsList());
 
+  /** Last surah the user opened (saved when they visit surah detail). Only shown when set. */
   continueSurah = computed(() => {
     const id = this.progressService.userProgress().currentSurah;
-    return this.quranService.getSurahById(id);
+    if (!id?.trim()) return null;
+    return this.quranService.getSurahById(id) ?? null;
   });
 
   constructor(

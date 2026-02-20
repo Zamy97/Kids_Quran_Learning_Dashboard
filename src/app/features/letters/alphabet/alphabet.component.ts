@@ -9,7 +9,7 @@ const AUTO_ADVANCE_SEC = 20;
   selector: 'app-alphabet',
   standalone: true,
   template: `
-    <div class="h-[calc(100vh-5.5rem)] min-h-[480px] flex flex-col relative">
+    <div class="h-full min-h-0 flex flex-col relative">
       <!-- Words overlay: big Arabic + English -->
       @if (showWords()) {
         <div class="fixed inset-0 z-50 bg-primary/95 flex flex-col items-center justify-center p-6"
@@ -128,7 +128,8 @@ const AUTO_ADVANCE_SEC = 20;
         </button>
       </div>
     </div>
-  `
+  `,
+  styles: [`:host { display: block; height: 100%; min-height: 0; }`]
 })
 export class AlphabetComponent implements OnDestroy {
   private speech = inject(SpeechService);

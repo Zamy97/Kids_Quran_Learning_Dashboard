@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Router outlet fills main so all screens can use full height without scroll */
+main router-outlet {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  display: block;
+}

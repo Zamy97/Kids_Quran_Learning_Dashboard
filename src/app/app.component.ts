@@ -7,9 +7,9 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
   standalone: true,
   imports: [RouterOutlet, NavigationComponent],
   template: `
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <div class="h-dvh max-h-dvh flex flex-col overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
       <app-navigation />
-      <main class="pb-8">
+      <main class="flex-1 min-h-0 overflow-hidden flex flex-col">
         <router-outlet />
       </main>
     </div>

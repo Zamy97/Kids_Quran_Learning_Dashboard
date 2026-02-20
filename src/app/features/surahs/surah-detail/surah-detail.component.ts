@@ -24,7 +24,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
   imports: [AudioControlsComponent],
   template: `
     @if (surah()) {
-      <div class="flex flex-col h-[calc(100vh-5.5rem)] min-h-0 max-w-7xl mx-auto">
+      <div class="flex flex-col h-full min-h-0 max-w-7xl mx-auto w-full">
         <!-- Minimal top bar -->
         <div class="flex items-center justify-between gap-2 px-2 py-1.5 flex-shrink-0 bg-white/80 backdrop-blur border-b">
           <button
@@ -124,14 +124,31 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
         }
 
         @if (viewMode() === 'read') {
-          <div class="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0">
-            @for (verse of surah()!.verses_data; track verse.number) {
-              <div class="bg-white p-5 rounded-2xl shadow border-r-4 border-primary">
-                <p class="text-2xl md:text-4xl text-primary text-right font-arabic leading-relaxed">
-                  {{ verse.arabic }}
-                  <span class="inline-block bg-primary text-white w-10 h-10 rounded-full text-center leading-10 text-lg ml-2">{{ verse.number }}</span>
+          <div class="flex-1 flex flex-col justify-center items-center px-4 py-2 min-h-0 overflow-hidden">
+            @if (readVerse()) {
+              <div class="w-full max-w-4xl mx-auto flex flex-col justify-center items-center text-center">
+                <p class="text-xs text-gray-400 mb-1 shrink-0">
+                  Verse {{ readVerse()!.number }} of {{ surah()!.verses }}
                 </p>
-                <p class="text-lg md:text-xl text-gray-700 mt-3">{{ verse.translation }}</p>
+                <div class="bg-white/90 rounded-2xl shadow-xl p-4 md:p-6 w-full flex flex-col justify-center min-h-0">
+                  <p class="text-primary text-right font-arabic leading-relaxed read-verse-arabic">
+                    {{ readVerse()!.arabic }}
+                    <span class="inline-block bg-primary text-white rounded-full text-center read-verse-num ml-2">{{ readVerse()!.number }}</span>
+                  </p>
+                </div>
+                <p class="text-gray-700 leading-snug mt-2 read-verse-translation">{{ readVerse()!.translation }}</p>
+                <div class="flex gap-2 mt-2 shrink-0">
+                  <button
+                    (click)="previousReadVerse()"
+                    [disabled]="readVerseIndex() === 0"
+                    class="px-4 py-2 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-sm"
+                  >⏮️</button>
+                  <button
+                    (click)="nextReadVerse()"
+                    [disabled]="readVerseIndex() === surah()!.verses_data.length - 1"
+                    class="px-4 py-2 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-sm"
+                  >⏭️</button>
+                </div>
               </div>
             }
           </div>
@@ -147,14 +164,12 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
     }
   `,
   styles: [`
-    /* As large as possible without scrolling; viewport-based */
-    .verse-arabic {
-      font-size: clamp(2.5rem, 14vmin, 8rem);
-      line-height: 1.3;
-    }
-    .verse-translation {
-      font-size: clamp(0.95rem, 2.2vmin, 1.35rem);
-    }
+    :host { display: block; height: 100%; min-height: 0; }
+    .verse-arabic { font-size: clamp(2.5rem, 14vmin, 8rem); line-height: 1.3; }
+    .verse-translation { font-size: clamp(0.95rem, 2.2vmin, 1.35rem); }
+    .read-verse-arabic { font-size: clamp(1.5rem, 8vmin, 5rem); line-height: 1.4; }
+    .read-verse-num { width: clamp(2rem, 6vmin, 3rem); height: clamp(2rem, 6vmin, 3rem); line-height: clamp(2rem, 6vmin, 3rem); font-size: clamp(0.875rem, 2.5vmin, 1.25rem); }
+    .read-verse-translation { font-size: clamp(0.875rem, 2.2vmin, 1.35rem); }
   `]
 })
 export class SurahDetailComponent implements OnInit, OnDestroy {
@@ -179,8 +194,17 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
   private playsThisVerse = signal(0);
   /** Used when verseAudioBaseUrl is set (ayah-by-ayah playback). */
   private verseIndexByAyah = signal(0);
+  /** Read mode: which verse is shown (one verse per screen, no scroll). */
+  readVerseIndex = signal(0);
 
   private endedSub: Subscription | null = null;
+
+  /** Verse shown in read mode (one at a time). */
+  readVerse = computed(() => {
+    const s = this.surah();
+    const idx = this.readVerseIndex();
+    return s ? s.verses_data[idx] ?? null : null;
+  });
 
   /** Per-verse MP3 URLs (EveryAyah style). Empty when not using verse-by-verse. */
   private verseAudioUrls = computed(() => {
@@ -302,6 +326,17 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
     } else if (s.verseStartTimes?.length) {
       this.audioService.seek(s.verseStartTimes[newIdx]);
     }
+  }
+
+  previousReadVerse(): void {
+    const idx = this.readVerseIndex();
+    if (idx > 0) this.readVerseIndex.set(idx - 1);
+  }
+
+  nextReadVerse(): void {
+    const s = this.surah();
+    const idx = this.readVerseIndex();
+    if (s && idx < s.verses_data.length - 1) this.readVerseIndex.set(idx + 1);
   }
 
   setRepeat(value: number): void {

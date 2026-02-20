@@ -9,7 +9,7 @@ export const SURAHS_DATA: Surah[] = [
     meaning: 'The Opening',
     verses: 7,
     revelation: 'Makkah',
-    memorized: true,
+    memorized: false,
     story: 'Al-Fatiha is the first chapter of the Quran and is recited in every unit of prayer. It was revealed in Makkah and is also called "The Opening" because it opens the Book of Allah. The Prophet ﷺ said it is "the greatest surah in the Quran." This beautiful surah teaches us how to praise Allah, ask for His guidance, and seek His help.',
     audioUrl: 'assets/audio/surahs/al-fatiha.mp3',
     verseStartTimes: [0, 5, 10, 16, 23, 31, 40],

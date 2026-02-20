@@ -34,7 +34,7 @@ export class ProgressTrackerService {
   private getDefaultProgress(): UserProgress {
     return {
       memorizedSurahs: [
-        'al-fatiha', 'an-nas', 'al-falaq', 'al-ikhlas',
+        'an-nas', 'al-falaq', 'al-ikhlas',
         'al-masad', 'an-nasr', 'al-kafirun', 'al-kawthar',
         'al-maun', 'quraysh', 'al-fil', 'al-asr'
       ],

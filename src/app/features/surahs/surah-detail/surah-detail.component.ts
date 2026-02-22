@@ -368,11 +368,13 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       } else {
         this.playsThisVerse.set(0);
         const endIdx = this.rangeEndIndex();
+        const startIdx = this.rangeStartIndex();
         const next = this.verseIndexByAyah() + 1;
         if (next <= endIdx) {
           this.verseIndexByAyah.set(next);
+        } else {
+          this.verseIndexByAyah.set(startIdx);
         }
-        // else: stop at end of range (no loop)
       }
     } else {
       this.loopSurahAudio();

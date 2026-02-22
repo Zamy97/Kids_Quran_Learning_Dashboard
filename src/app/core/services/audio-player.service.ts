@@ -14,6 +14,12 @@ export interface LoadAudioOptions {
   autoPlay?: boolean;
 }
 
+export interface MediaSessionMetadata {
+  title: string;
+  artist?: string;
+  album?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +39,31 @@ export class AudioPlayerService {
   readonly onEnded = new Subject<void>();
 
   readonly state = this.audioState.asReadonly();
+
+  /**
+   * Set Media Session metadata so the OS shows the current track and can keep playback
+   * in background (lock screen / notification controls) on supported devices.
+   */
+  setMediaSessionMetadata(meta: MediaSessionMetadata | null): void {
+    if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+    if (!meta) {
+      navigator.mediaSession.metadata = null;
+      return;
+    }
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: meta.title,
+      artist: meta.artist ?? '',
+      album: meta.album ?? ''
+    });
+    navigator.mediaSession.setActionHandler('play', () => this.play());
+    navigator.mediaSession.setActionHandler('pause', () => this.pause());
+  }
+
+  /** Update Media Session playback state (e.g. when play/pause changes). */
+  setMediaSessionPlaybackState(playing: boolean): void {
+    if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
+    navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+  }
 
   loadAudio(url: string, options?: LoadAudioOptions): void {
     const autoPlay = options?.autoPlay ?? false;
@@ -55,6 +86,7 @@ export class AudioPlayerService {
       if (autoPlay) {
         this.audio?.play().then(() => {
           this.audioState.update(s => ({ ...s, isPlaying: true }));
+          this.setMediaSessionPlaybackState(true);
         }).catch(() => {});
       }
     });
@@ -72,6 +104,7 @@ export class AudioPlayerService {
         isPlaying: false,
         currentTime: 0
       }));
+      this.setMediaSessionPlaybackState(false);
       this.onEnded.next();
     });
 
@@ -88,6 +121,7 @@ export class AudioPlayerService {
     if (this.audio) {
       this.audio.play();
       this.audioState.update(s => ({ ...s, isPlaying: true }));
+      this.setMediaSessionPlaybackState(true);
     }
   }
 
@@ -95,6 +129,7 @@ export class AudioPlayerService {
     if (this.audio) {
       this.audio.pause();
       this.audioState.update(s => ({ ...s, isPlaying: false }));
+      this.setMediaSessionPlaybackState(false);
     }
   }
 
@@ -130,6 +165,8 @@ export class AudioPlayerService {
       this.audio.pause();
       this.audio = null;
     }
+    this.setMediaSessionMetadata(null);
+    this.setMediaSessionPlaybackState(false);
     this.audioState.set({
       isPlaying: false,
       currentTime: 0,

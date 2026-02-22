@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, computed, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuranDataService } from '../../../core/services/quran-data.service';
 import { AudioPlayerService } from '../../../core/services/audio-player.service';
 import { ProgressTrackerService } from '../../../core/services/progress-tracker.service';
+import { WakeLockService } from '../../../core/services/wake-lock.service';
 import { AudioControlsComponent } from '../../../shared/components/audio-controls/audio-controls.component';
 import { Surah } from '../../../core/models/surah.model';
 import { buildVerseAudioUrls } from '../../../core/utils/verse-audio.utils';
@@ -68,6 +69,28 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                   Verse {{ currentVerse()!.number }} of {{ surah()!.verses }}
                   @if (usePerVerseAudio()) {
                     <span class="ml-2 text-primary">·</span>
+                    <span class="inline-flex items-center gap-1 flex-wrap">
+                      <label class="text-gray-500">From</label>
+                      <input
+                        type="number"
+                        [min]="1"
+                        [max]="effectiveRangeEnd()"
+                        [value]="playRangeStart()"
+                        (input)="onRangeStartInput($event)"
+                        class="w-10 px-1 py-0.5 rounded border border-primary text-xs font-bold text-center"
+                      />
+                      <label class="text-gray-500">to</label>
+                      <input
+                        type="number"
+                        [min]="effectiveRangeStart()"
+                        [max]="surah()!.verses"
+                        [value]="playRangeEnd()"
+                        (input)="onRangeEndInput($event)"
+                        class="w-10 px-1 py-0.5 rounded border border-primary text-xs font-bold text-center"
+                      />
+                      <span class="text-gray-500">verse</span>
+                    </span>
+                    <span class="ml-2 text-primary">·</span>
                     @for (opt of repeatOptions; track opt.value) {
                       <button
                         type="button"
@@ -103,21 +126,32 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                 <p class="verse-translation text-gray-700 leading-snug max-w-4xl mx-auto mt-2 shrink-0">
                   {{ currentVerse()!.translation }}
                 </p>
-                <div class="flex gap-2 mt-2 shrink-0">
+                <div class="flex flex-wrap items-center justify-center gap-2 mt-2 shrink-0">
                   <button
                     (click)="previousVerse()"
-                    [disabled]="currentVerseIndex() === 0"
+                    [disabled]="isAtRangeStart()"
                     class="px-4 py-2 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-sm"
                   >
                     ⏮️
                   </button>
                   <button
                     (click)="nextVerse()"
-                    [disabled]="currentVerseIndex() === surah()!.verses_data.length - 1"
+                    [disabled]="isAtRangeEnd()"
                     class="px-4 py-2 rounded-full bg-primary text-white font-bold disabled:opacity-40 text-sm"
                   >
                     ⏭️
                   </button>
+                  @if (wakeLock.isSupported) {
+                    <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-gray-100 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        [checked]="wakeLock.isActive()"
+                        (change)="onKeepScreenOnChange($event)"
+                        class="rounded border-primary"
+                      />
+                      <span>Keep screen on</span>
+                    </label>
+                  }
                 </div>
               </div>
             }
@@ -161,6 +195,11 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
             <app-audio-controls [audioUrl]="currentAudioUrl()!" [autoPlay]="true" [compact]="true" />
           </div>
         }
+        @if (wakeLock.isSupported && viewMode() === 'listen') {
+          <p class="text-[10px] text-gray-400 text-center px-2 py-1 shrink-0">
+            “Keep screen on” prevents sleep. Lock-screen media controls may keep audio playing when supported.
+          </p>
+        }
       </div>
     }
   `,
@@ -185,6 +224,9 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
   viewMode = signal<ViewMode>('listen');
   /** 1 = once; 5 = five times; 0 = until skip; any positive N = repeat N times (including custom). */
   repeatVerseCount = signal(1);
+  /** Play only verses in this range (1-based). Used when usePerVerseAudio. */
+  playRangeStart = signal(1);
+  playRangeEnd = signal(1);
 
   /** Value to show in the custom repeat input (empty when preset 0 is selected). */
   customRepeatInput = computed(() => {
@@ -212,6 +254,26 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
     const s = this.surah();
     return s ? buildVerseAudioUrls(s) : [];
   });
+
+  /** Clamped 1-based range start (1..verses). */
+  effectiveRangeStart = computed(() => {
+    const s = this.surah();
+    if (!s) return 1;
+    return Math.max(1, Math.min(this.playRangeStart(), s.verses));
+  });
+
+  /** Clamped 1-based range end (1..verses, >= start). */
+  effectiveRangeEnd = computed(() => {
+    const s = this.surah();
+    if (!s) return 1;
+    const start = this.effectiveRangeStart();
+    return Math.max(start, Math.min(this.playRangeEnd(), s.verses));
+  });
+
+  /** 0-based range start for indexing. */
+  private rangeStartIndex = computed(() => this.effectiveRangeStart() - 1);
+  /** 0-based range end (inclusive) for indexing. */
+  private rangeEndIndex = computed(() => this.effectiveRangeEnd() - 1);
 
   /** True when using ayah-by-ayah (one MP3 per verse). */
   usePerVerseAudio = computed(() => this.verseAudioUrls().length > 0);
@@ -255,8 +317,31 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private quranService: QuranDataService,
     private audioService: AudioPlayerService,
-    private progressService: ProgressTrackerService
-  ) {}
+    private progressService: ProgressTrackerService,
+    public wakeLock: WakeLockService
+  ) {
+    effect(() => {
+      const s = this.surah();
+      const verse = this.currentVerse();
+      const url = this.currentAudioUrl();
+      if (s && verse && url) {
+        this.audioService.setMediaSessionMetadata({
+          title: `${s.nameEn} — Verse ${verse.number}`,
+          artist: s.nameAr,
+          album: 'Quran'
+        });
+      }
+    });
+    effect(() => {
+      if (!this.usePerVerseAudio()) return;
+      const start = this.rangeStartIndex();
+      const end = this.rangeEndIndex();
+      const idx = this.verseIndexByAyah();
+      if (idx < start || idx > end) {
+        this.verseIndexByAyah.set(Math.max(start, Math.min(end, idx)));
+      }
+    });
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -264,6 +349,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       const surah = this.quranService.getSurahById(id);
       if (surah) {
         this.surah.set(surah);
+        this.playRangeEnd.set(surah.verses);
         this.progressService.setCurrentSurah(id);
       }
     }
@@ -273,7 +359,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
   private onAudioEnded(): void {
     if (this.usePerVerseAudio()) {
       const count = this.repeatVerseCount();
-      const completedPlays = this.playsThisVerse() + 1; // we just finished one play
+      const completedPlays = this.playsThisVerse() + 1;
       const shouldReplay = count === 0 || completedPlays < count;
       if (shouldReplay) {
         this.playsThisVerse.set(completedPlays);
@@ -281,11 +367,12 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
         if (url) this.audioService.loadAudio(url, { autoPlay: true });
       } else {
         this.playsThisVerse.set(0);
-        const s = this.surah();
-        if (!s) return;
-        const n = s.verses_data.length;
-        const next = (this.verseIndexByAyah() + 1) % n;
-        this.verseIndexByAyah.set(next);
+        const endIdx = this.rangeEndIndex();
+        const next = this.verseIndexByAyah() + 1;
+        if (next <= endIdx) {
+          this.verseIndexByAyah.set(next);
+        }
+        // else: stop at end of range (no loop)
       }
     } else {
       this.loopSurahAudio();
@@ -294,6 +381,7 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.endedSub?.unsubscribe();
+    this.wakeLock.release();
   }
 
   private loopSurahAudio(): void {
@@ -305,10 +393,22 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['/surahs']);
   }
 
+  isAtRangeStart(): boolean {
+    if (this.usePerVerseAudio()) return this.currentVerseIndex() <= this.rangeStartIndex();
+    return this.currentVerseIndex() === 0;
+  }
+
+  isAtRangeEnd(): boolean {
+    if (this.usePerVerseAudio()) return this.currentVerseIndex() >= this.rangeEndIndex();
+    const s = this.surah();
+    return !s || this.currentVerseIndex() >= s.verses_data.length - 1;
+  }
+
   previousVerse(): void {
     const s = this.surah();
     const idx = this.currentVerseIndex();
-    if (!s || idx === 0) return;
+    const startIdx = this.usePerVerseAudio() ? this.rangeStartIndex() : 0;
+    if (!s || idx <= startIdx) return;
     const newIdx = idx - 1;
     if (this.usePerVerseAudio()) {
       this.playsThisVerse.set(0);
@@ -321,7 +421,8 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
   nextVerse(): void {
     const s = this.surah();
     const idx = this.currentVerseIndex();
-    if (!s || idx >= s.verses_data.length - 1) return;
+    const endIdx = this.usePerVerseAudio() ? this.rangeEndIndex() : (s?.verses_data.length ?? 1) - 1;
+    if (!s || idx >= endIdx) return;
     const newIdx = idx + 1;
     if (this.usePerVerseAudio()) {
       this.playsThisVerse.set(0);
@@ -353,5 +454,35 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
       const clamped = Math.min(99, Math.max(1, n));
       this.repeatVerseCount.set(clamped);
     }
+  }
+
+  onRangeStartInput(event: Event): void {
+    const s = this.surah();
+    if (!s) return;
+    const n = parseInt((event.target as HTMLInputElement).value, 10);
+    if (!Number.isNaN(n)) {
+      const clamped = Math.min(s.verses, Math.max(1, n));
+      this.playRangeStart.set(clamped);
+      if (this.playRangeEnd() < clamped) this.playRangeEnd.set(clamped);
+      this.verseIndexByAyah.set(Math.max(0, Math.min(this.verseIndexByAyah(), this.rangeEndIndex())));
+      if (this.verseIndexByAyah() < this.rangeStartIndex()) this.verseIndexByAyah.set(this.rangeStartIndex());
+    }
+  }
+
+  onRangeEndInput(event: Event): void {
+    const s = this.surah();
+    if (!s) return;
+    const n = parseInt((event.target as HTMLInputElement).value, 10);
+    if (!Number.isNaN(n)) {
+      const clamped = Math.min(s.verses, Math.max(1, n));
+      this.playRangeEnd.set(Math.max(this.playRangeStart(), clamped));
+      if (this.verseIndexByAyah() > this.rangeEndIndex()) this.verseIndexByAyah.set(this.rangeEndIndex());
+    }
+  }
+
+  async onKeepScreenOnChange(event: Event): Promise<void> {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) await this.wakeLock.request();
+    else await this.wakeLock.release();
   }
 }

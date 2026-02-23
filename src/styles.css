@@ -1,7 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Router outlet fills main so all screens can use full height without scroll */
+/* Router outlet is a placeholder; routed component is inserted as next sibling */
 main router-outlet {
+  flex: 0 0 0;
+  min-height: 0;
+  overflow: hidden;
+  display: block;
+}
+
+/* Routed component fills main so height is constrained and internal scroll works */
+main router-outlet + * {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;

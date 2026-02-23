@@ -26,7 +26,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
   imports: [AudioControlsComponent],
   template: `
     @if (surah()) {
-      <div class="flex flex-col h-full min-h-0 max-w-7xl mx-auto w-full">
+      <div class="flex flex-col h-full min-h-0 max-w-7xl mx-auto w-full overflow-hidden">
         <!-- Minimal top bar -->
         <div class="flex items-center justify-between gap-2 px-2 py-1.5 flex-shrink-0 bg-white/80 backdrop-blur border-b">
           <button
@@ -61,11 +61,11 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
         </div>
 
         @if (viewMode() === 'listen') {
-          <!-- Full-screen verse: no scroll, Arabic as large as possible -->
-          <div class="flex-1 flex flex-col justify-center items-center px-3 py-2 min-h-0 overflow-hidden">
+          <!-- Verse content: contained height, scroll inside; full width, no top/bottom overflow -->
+          <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col items-center px-3 pt-4 pb-2 verse-scroll">
             @if (currentVerse()) {
-              <div class="w-full h-full flex flex-col justify-center items-center text-center max-w-6xl mx-auto">
-                <p class="text-xs text-gray-400 mb-1 shrink-0">
+              <div class="w-full flex flex-col items-center text-center max-w-6xl mx-auto pt-2 pb-2 min-w-0">
+                <p class="text-xs text-gray-400 mb-1">
                   Verse {{ currentVerse()!.number }} of {{ surah()!.verses }}
                   @if (usePerVerseAudio()) {
                     <span class="ml-2 text-primary">·</span>
@@ -118,15 +118,15 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                     <span class="ml-2 text-primary">Synced</span>
                   }
                 </p>
-                <div class="bg-white/90 rounded-2xl shadow-xl p-4 md:p-6 flex-1 min-h-0 flex flex-col justify-center w-full">
-                  <p class="verse-arabic text-primary text-right font-arabic leading-tight mb-2">
+                <div class="bg-white/90 rounded-2xl shadow-xl px-4 md:px-6 py-5 md:py-8 w-full min-w-0 overflow-x-hidden verse-arabic-wrap">
+                  <p class="verse-arabic text-primary text-right font-arabic">
                     {{ currentVerse()!.arabic }}
                   </p>
                 </div>
-                <p class="verse-translation text-gray-700 leading-snug max-w-4xl mx-auto mt-2 shrink-0">
+                <p class="verse-translation text-gray-700 leading-snug max-w-4xl mx-auto mt-2 break-words min-w-0">
                   {{ currentVerse()!.translation }}
                 </p>
-                <div class="flex flex-wrap items-center justify-center gap-2 mt-2 shrink-0">
+                <div class="flex flex-wrap items-center justify-center gap-2 mt-2">
                   <button
                     (click)="previousVerse()"
                     [disabled]="isAtRangeStart()"
@@ -159,20 +159,20 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
         }
 
         @if (viewMode() === 'read') {
-          <div class="flex-1 flex flex-col justify-center items-center px-4 py-2 min-h-0 overflow-hidden">
+          <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col items-center px-4 pt-4 pb-2 verse-scroll">
             @if (readVerse()) {
-              <div class="w-full max-w-4xl mx-auto flex flex-col justify-center items-center text-center">
-                <p class="text-xs text-gray-400 mb-1 shrink-0">
+              <div class="w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 pb-2 min-w-0">
+                <p class="text-xs text-gray-400 mb-1">
                   Verse {{ readVerse()!.number }} of {{ surah()!.verses }}
                 </p>
-                <div class="bg-white/90 rounded-2xl shadow-xl p-4 md:p-6 w-full flex flex-col justify-center min-h-0">
-                  <p class="text-primary text-right font-arabic leading-relaxed read-verse-arabic">
+                <div class="bg-white/90 rounded-2xl shadow-xl px-4 md:px-6 py-5 md:py-8 w-full min-w-0 overflow-x-hidden verse-arabic-wrap">
+                  <p class="text-primary text-right font-arabic read-verse-arabic">
                     {{ readVerse()!.arabic }}
                     <span class="inline-block bg-primary text-white rounded-full text-center read-verse-num ml-2">{{ readVerse()!.number }}</span>
                   </p>
                 </div>
-                <p class="text-gray-700 leading-snug mt-2 read-verse-translation">{{ readVerse()!.translation }}</p>
-                <div class="flex gap-2 mt-2 shrink-0">
+                <p class="text-gray-700 leading-snug mt-2 read-verse-translation break-words min-w-0">{{ readVerse()!.translation }}</p>
+                <div class="flex gap-2 mt-2">
                   <button
                     (click)="previousReadVerse()"
                     [disabled]="readVerseIndex() === 0"
@@ -204,12 +204,33 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
     }
   `,
   styles: [`
-    :host { display: block; height: 100%; min-height: 0; }
-    .verse-arabic { font-size: clamp(2.5rem, 14vmin, 8rem); line-height: 1.3; }
-    .verse-translation { font-size: clamp(0.95rem, 2.2vmin, 1.35rem); }
-    .read-verse-arabic { font-size: clamp(1.5rem, 8vmin, 5rem); line-height: 1.4; }
-    .read-verse-num { width: clamp(2rem, 6vmin, 3rem); height: clamp(2rem, 6vmin, 3rem); line-height: clamp(2rem, 6vmin, 3rem); font-size: clamp(0.875rem, 2.5vmin, 1.25rem); }
-    .read-verse-translation { font-size: clamp(0.875rem, 2.2vmin, 1.35rem); }
+    :host { display: block; height: 100%; min-height: 0; overflow: hidden; }
+    .verse-scroll { -webkit-overflow-scrolling: touch; }
+    /* Wrapper: no vertical clip so Arabic ascenders/descenders aren't cut */
+    .verse-arabic-wrap { overflow-y: visible; }
+    /* Big text for kids – extra padding so huruf aren't clipped at top/bottom */
+    .verse-arabic {
+      font-size: clamp(2.75rem, 16vmin, 9rem);
+      line-height: 1.5;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+      padding-top: 0.35em;
+      padding-bottom: 0.25em;
+    }
+    .verse-translation {
+      font-size: clamp(1.15rem, 4vmin, 2rem);
+      line-height: 1.5;
+    }
+    .read-verse-arabic {
+      font-size: clamp(2.25rem, 12vmin, 6.5rem);
+      line-height: 1.5;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+      padding-top: 0.35em;
+      padding-bottom: 0.25em;
+    }
+    .read-verse-num { width: clamp(2.5rem, 7vmin, 4rem); height: clamp(2.5rem, 7vmin, 4rem); line-height: clamp(2.5rem, 7vmin, 4rem); font-size: clamp(1rem, 3vmin, 1.5rem); }
+    .read-verse-translation { font-size: clamp(1.1rem, 3.5vmin, 1.75rem); line-height: 1.5; }
   `]
 })
 export class SurahDetailComponent implements OnInit, OnDestroy {

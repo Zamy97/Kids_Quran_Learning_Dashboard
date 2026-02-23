@@ -374,6 +374,10 @@ export class SurahDetailComponent implements OnInit, OnDestroy {
           this.verseIndexByAyah.set(next);
         } else {
           this.verseIndexByAyah.set(startIdx);
+          if (startIdx === endIdx) {
+            const url = this.verseAudioUrls()[startIdx];
+            if (url) this.audioService.loadAudio(url, { autoPlay: true });
+          }
         }
       }
     } else {

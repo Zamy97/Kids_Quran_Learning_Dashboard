@@ -195,9 +195,12 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
             <app-audio-controls [audioUrl]="currentAudioUrl()!" [autoPlay]="true" [compact]="true" />
           </div>
         }
-        @if (wakeLock.isSupported && viewMode() === 'listen') {
+        @if (viewMode() === 'listen') {
           <p class="text-[10px] text-gray-400 text-center px-2 py-1 shrink-0">
-            “Keep screen on” prevents sleep. Lock-screen media controls may keep audio playing when supported.
+            @if (wakeLock.isSupported) {
+              “Keep screen on” prevents sleep. Lock-screen media controls may keep audio playing when supported.
+            }
+            If audio stops when you switch browser tabs, it will resume when you return to this tab.
           </p>
         }
       </div>

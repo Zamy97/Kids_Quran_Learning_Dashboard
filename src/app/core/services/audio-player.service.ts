@@ -25,6 +25,9 @@ export interface MediaSessionMetadata {
 })
 export class AudioPlayerService {
   private audio: HTMLAudioElement | null = null;
+  private visibilityListener: (() => void) | null = null;
+  /** True when playback was active right before the tab was hidden (so we can resume on visible). */
+  private wasPlayingBeforeHidden = false;
 
   private audioState = signal<AudioState>({
     isPlaying: false,
@@ -39,6 +42,22 @@ export class AudioPlayerService {
   readonly onEnded = new Subject<void>();
 
   readonly state = this.audioState.asReadonly();
+
+  constructor() {
+    if (typeof document !== 'undefined') {
+      this.visibilityListener = () => this.onVisibilityChange();
+      document.addEventListener('visibilitychange', this.visibilityListener);
+    }
+  }
+
+  private onVisibilityChange(): void {
+    if (document.visibilityState === 'hidden') {
+      this.wasPlayingBeforeHidden = this.audioState().isPlaying;
+    } else if (document.visibilityState === 'visible' && this.wasPlayingBeforeHidden && this.audio) {
+      this.wasPlayingBeforeHidden = false;
+      if (this.audio.paused) this.play();
+    }
+  }
 
   /**
    * Set Media Session metadata so the OS shows the current track and can keep playback
@@ -161,6 +180,11 @@ export class AudioPlayerService {
   }
 
   destroy(): void {
+    if (this.visibilityListener && typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', this.visibilityListener);
+      this.visibilityListener = null;
+    }
+    this.wasPlayingBeforeHidden = false;
     if (this.audio) {
       this.audio.pause();
       this.audio = null;

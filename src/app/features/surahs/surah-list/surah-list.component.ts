@@ -30,7 +30,7 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
             [(ngModel)]="searchQuery"
             (ngModelChange)="onSearch()"
             placeholder="Search..."
-            class="px-3 py-1.5 border-2 border-primary rounded-full w-full sm:w-48 md:w-64 text-sm"
+            class="px-3 py-1.5 border-2 border-primary rounded-full w-full sm:w-48 md:w-64 text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 placeholder:dark:text-gray-400"
           />
         </div>
       </div>
@@ -40,14 +40,14 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
         @if (filteredSurahs().length === 0) {
           <div class="flex flex-col items-center justify-center text-center py-12">
             <div class="text-4xl md:text-6xl mb-2">🔍</div>
-            <p class="text-sm md:text-xl text-gray-500">No surahs found matching "{{ searchQuery }}"</p>
+            <p class="text-sm md:text-xl text-gray-500 dark:text-gray-400">No surahs found matching "{{ searchQuery }}"</p>
           </div>
         } @else {
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 pb-4">
             @for (surah of filteredSurahs(); track surah.id) {
               <div
                 (click)="openSurah(surah.id)"
-                class="surah-card bg-white rounded-xl shadow-md cursor-pointer
+                class="surah-card bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 cursor-pointer
                        hover:scale-[1.02] hover:shadow-lg active:scale-[0.99] transition-all flex flex-col
                        border-l-4 min-h-[4.5rem]"
                 [class.border-l-primary]="!surah.memorized"
@@ -55,6 +55,8 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
                 [class.bg-gradient-to-br]="surah.memorized"
                 [class.from-blue-50]="surah.memorized"
                 [class.to-cyan-50]="surah.memorized"
+                [class.dark:from-gray-700]="surah.memorized"
+                [class.dark:to-gray-600]="surah.memorized"
               >
                 <div class="flex items-center gap-3 flex-1 p-3 md:p-4">
                   <div class="surah-num-badge bg-primary text-white rounded-full flex items-center justify-center font-bold shrink-0">
@@ -64,10 +66,10 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
                     <div class="surah-name-ar font-bold text-primary font-arabic leading-tight text-right" dir="rtl">
                       {{ surah.nameAr }}
                     </div>
-                    <div class="surah-name-en font-semibold text-gray-800 leading-tight">
+                    <div class="surah-name-en font-semibold text-gray-800 dark:text-gray-200 leading-tight">
                       {{ surah.nameEn }}
                     </div>
-                    <div class="surah-meta text-gray-500 leading-tight">
+                    <div class="surah-meta text-gray-500 dark:text-gray-400 leading-tight">
                       {{ surah.meaning }} · {{ surah.verses }} v
                     </div>
                   </div>

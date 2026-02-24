@@ -1,5 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* Dark mode: ensure document background when .dark is on html */
+html.dark {
+  color-scheme: dark;
+}
+html.dark body {
+  background-color: #111827;
+}
+
 /* Router outlet is a placeholder; routed component is inserted as next sibling */
 main router-outlet {
   flex: 0 0 0;

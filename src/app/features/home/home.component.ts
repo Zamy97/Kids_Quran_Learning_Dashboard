@@ -8,7 +8,7 @@ import { ProgressTrackerService } from '../../core/services/progress-tracker.ser
   imports: [RouterLink],
   template: `
     <div class="min-h-[calc(100vh-12rem)] flex flex-col justify-center items-center px-4 py-4">
-      <p class="text-xl text-gray-600 mb-8">Assalamu Alaikum 🌸</p>
+      <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">Assalamu Alaikum 🌸</p>
 
       <a
         [routerLink]="continueRoute()"
@@ -20,9 +20,9 @@ import { ProgressTrackerService } from '../../core/services/progress-tracker.ser
       </a>
 
       <div class="flex gap-4 mt-10">
-        <a [routerLink]="['/hadith']" class="text-gray-500 hover:text-primary text-sm font-medium">Hadith</a>
-        <a [routerLink]="['/duas']" class="text-gray-500 hover:text-primary text-sm font-medium">Du'as</a>
-        <a [routerLink]="['/letters']" class="text-gray-500 hover:text-primary text-sm font-medium">Letters</a>
+        <a [routerLink]="['/hadith']" class="text-gray-500 dark:text-gray-400 hover:text-primary text-sm font-medium">Hadith</a>
+        <a [routerLink]="['/duas']" class="text-gray-500 dark:text-gray-400 hover:text-primary text-sm font-medium">Du'as</a>
+        <a [routerLink]="['/letters']" class="text-gray-500 dark:text-gray-400 hover:text-primary text-sm font-medium">Letters</a>
       </div>
     </div>
   `

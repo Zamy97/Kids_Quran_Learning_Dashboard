@@ -28,10 +28,10 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
     @if (surah()) {
       <div class="flex flex-col h-full min-h-0 max-w-7xl mx-auto w-full overflow-hidden">
         <!-- Minimal top bar -->
-        <div class="flex items-center justify-between gap-2 px-2 py-1.5 flex-shrink-0 bg-white/80 backdrop-blur border-b">
+        <div class="flex items-center justify-between gap-2 px-2 py-1.5 flex-shrink-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur border-b dark:border-gray-700">
           <button
             (click)="goBack()"
-            class="px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300 font-semibold text-sm"
+            class="px-3 py-2 rounded-full bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 font-semibold text-sm text-gray-900 dark:text-gray-100"
           >
             ← Back
           </button>
@@ -44,7 +44,8 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
               [class.bg-primary]="viewMode() === 'listen'"
               [class.text-white]="viewMode() === 'listen'"
               [class.bg-gray-200]="viewMode() !== 'listen'"
-              class="px-3 py-1.5 rounded-full font-bold text-xs"
+              [class.dark:bg-gray-600]="viewMode() !== 'listen'"
+              class="px-3 py-1.5 rounded-full font-bold text-xs dark:text-gray-100"
               title="Full surah"
             >
               🎧 Listen
@@ -55,7 +56,8 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                 [class.bg-primary]="viewMode() === 'everyAyah'"
                 [class.text-white]="viewMode() === 'everyAyah'"
                 [class.bg-gray-200]="viewMode() !== 'everyAyah'"
-                class="px-3 py-1.5 rounded-full font-bold text-xs"
+                [class.dark:bg-gray-600]="viewMode() !== 'everyAyah'"
+                class="px-3 py-1.5 rounded-full font-bold text-xs dark:text-gray-100"
                 title="Verse by verse (Every ayah)"
               >
                 📿 Every ayah
@@ -66,7 +68,8 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
               [class.bg-primary]="viewMode() === 'read'"
               [class.text-white]="viewMode() === 'read'"
               [class.bg-gray-200]="viewMode() !== 'read'"
-              class="px-3 py-1.5 rounded-full font-bold text-xs"
+              [class.dark:bg-gray-600]="viewMode() !== 'read'"
+              class="px-3 py-1.5 rounded-full font-bold text-xs dark:text-gray-100"
               title="Read"
             >
               📖 Read
@@ -144,7 +147,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                   }
                 </p>
                 <div class="flex-1 min-h-0 flex flex-col min-w-0 w-full overflow-hidden">
-                  <div class="bg-white/90 rounded-2xl shadow-xl px-4 md:px-6 py-4 md:py-6 w-full min-w-0 min-h-0 flex-1 flex flex-col justify-center overflow-hidden verse-arabic-wrap">
+                  <div class="bg-white/90 dark:bg-gray-800/95 rounded-2xl shadow-xl dark:shadow-gray-900/50 px-4 md:px-6 py-4 md:py-6 w-full min-w-0 min-h-0 flex-1 flex flex-col justify-center overflow-hidden verse-arabic-wrap">
                     <p class="verse-arabic text-primary text-right font-arabic min-h-0">
                       {{ currentVerse()!.arabic }}
                     </p>
@@ -169,7 +172,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                     ⏭️
                   </button>
                   @if (wakeLock.isSupported) {
-                    <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-gray-100 text-sm cursor-pointer">
+                    <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-gray-100 dark:bg-gray-600 text-sm cursor-pointer dark:text-gray-100">
                       <input
                         type="checkbox"
                         [checked]="wakeLock.isActive()"
@@ -191,8 +194,8 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
               @for (verse of surah()!.verses_data; track verse.number) {
                 <div #verseBlock class="read-verse-block w-full flex flex-col items-center min-w-0 transition-colors duration-200 rounded-2xl -mx-2 px-2 py-2" [attr.data-verse-number]="verse.number" [class.read-verse-highlight]="verse.number === readHighlightedVerseNumber()">
                   <p class="text-xs text-gray-400 mb-1">Verse {{ verse.number }} of {{ surah()!.verses }}</p>
-                  <div class="bg-white/90 rounded-2xl shadow-xl px-4 md:px-6 py-5 md:py-8 w-full min-w-0 overflow-x-hidden verse-arabic-wrap">
-                    <p class="text-primary text-right font-arabic read-verse-arabic">
+<div class="bg-white/90 dark:bg-gray-800/95 rounded-2xl shadow-xl dark:shadow-gray-900/50 px-4 md:px-6 py-5 md:py-8 w-full min-w-0 overflow-x-hidden verse-arabic-wrap">
+                  <p class="text-primary text-right font-arabic read-verse-arabic">
                       {{ verse.arabic }}
                       <span class="inline-block bg-primary text-white rounded-full text-center read-verse-num ml-2">{{ verse.number }}</span>
                     </p>

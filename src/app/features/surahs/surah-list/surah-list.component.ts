@@ -63,7 +63,7 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
                     {{ surah.number }}
                   </div>
                   <div class="min-w-0 flex-1 flex flex-col justify-center gap-1">
-                    <div class="surah-name-ar font-bold text-primary font-arabic leading-tight text-right" dir="rtl">
+                    <div class="surah-name-ar font-bold text-primary dark:text-white font-arabic leading-tight text-right" dir="rtl">
                       {{ surah.nameAr }}
                     </div>
                     <div class="surah-name-en font-semibold text-gray-800 dark:text-gray-200 leading-tight">

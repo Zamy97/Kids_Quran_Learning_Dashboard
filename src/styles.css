@@ -8,6 +8,19 @@ html.dark body {
   background-color: #111827;
 }
 
+/* Dark mode: Arabic and translation text – white (backup; templates use dark:text-white) */
+html.dark .verse-arabic,
+html.dark .read-verse-arabic,
+html.dark .surah-name-ar,
+html.dark .dua-arabic,
+html.dark .verse-translation,
+html.dark .read-verse-translation {
+  color: #ffffff !important;
+}
+html.dark .font-arabic.text-primary {
+  color: #ffffff !important;
+}
+
 /* Router outlet is a placeholder; routed component is inserted as next sibling */
 main router-outlet {
   flex: 0 0 0;

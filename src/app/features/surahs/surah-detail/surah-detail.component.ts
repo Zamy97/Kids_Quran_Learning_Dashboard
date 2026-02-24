@@ -35,7 +35,7 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
           >
             ← Back
           </button>
-          <span class="text-base md:text-lg font-bold text-primary truncate">
+          <span class="text-base md:text-lg font-bold text-primary dark:text-white truncate">
             {{ surah()!.nameAr }} · {{ surah()!.nameEn }}
           </span>
           <div class="flex gap-1 flex-wrap justify-end">
@@ -83,12 +83,12 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
             @if (useFullSurahAudio()) {
               <!-- Full surah Listen: visual card only, no verse display -->
               <div class="w-full flex flex-col items-center max-w-6xl mx-auto pt-2 pb-2 min-w-0 flex-1 justify-center">
-                <div class="full-surah-visual rounded-2xl shadow-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 p-6 md:p-8 text-center w-full max-w-lg mx-auto flex flex-col justify-center min-h-[200px]">
+                <div class="full-surah-visual rounded-2xl shadow-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 dark:from-gray-700 dark:to-gray-600 border-2 border-primary/20 dark:border-gray-600 p-6 md:p-8 text-center w-full max-w-lg mx-auto flex flex-col justify-center min-h-[200px]">
                   <img src="assets/images/surah-cover.png" alt="" class="full-surah-cover mx-auto rounded-xl mb-3 max-h-48 object-contain" (error)="$any($event.target).style.display='none'" />
-                  <p class="text-primary font-arabic text-3xl md:text-4xl font-bold mb-1">{{ surah()!.nameAr }}</p>
-                  <p class="text-gray-700 text-lg md:text-xl font-semibold">{{ surah()!.nameEn }}</p>
-                  <p class="text-gray-500 text-sm mt-1">{{ surah()!.verses }} verses · Full surah</p>
-                  <p class="text-gray-400 text-xs mt-2">Tap Play below to listen</p>
+                  <p class="text-primary dark:text-white font-arabic text-3xl md:text-4xl font-bold mb-1">{{ surah()!.nameAr }}</p>
+                  <p class="text-gray-700 dark:text-white text-lg md:text-xl font-semibold">{{ surah()!.nameEn }}</p>
+                  <p class="text-gray-500 dark:text-gray-200 text-sm mt-1">{{ surah()!.verses }} verses · Full surah</p>
+                  <p class="text-gray-400 dark:text-gray-300 text-xs mt-2">Tap Play below to listen</p>
                 </div>
               </div>
             } @else if (currentVerse()) {
@@ -148,11 +148,11 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                 </p>
                 <div class="flex-1 min-h-0 flex flex-col min-w-0 w-full overflow-hidden">
                   <div class="bg-white/90 dark:bg-gray-800/95 rounded-2xl shadow-xl dark:shadow-gray-900/50 px-4 md:px-6 py-4 md:py-6 w-full min-w-0 min-h-0 flex-1 flex flex-col justify-center overflow-hidden verse-arabic-wrap">
-                    <p class="verse-arabic text-primary text-right font-arabic min-h-0">
+                    <p class="verse-arabic text-primary dark:text-white text-right font-arabic min-h-0">
                       {{ currentVerse()!.arabic }}
                     </p>
                   </div>
-                  <p class="verse-translation text-gray-700 leading-snug max-w-4xl mx-auto mt-2 break-words min-w-0 flex-shrink-0">
+                  <p class="verse-translation text-gray-700 dark:text-white leading-snug max-w-4xl mx-auto mt-2 break-words min-w-0 flex-shrink-0">
                     {{ currentVerse()!.translation }}
                   </p>
                 </div>
@@ -195,12 +195,12 @@ function getVerseIndexForTime(currentTime: number, verseStartTimes: number[]): n
                 <div #verseBlock class="read-verse-block w-full flex flex-col items-center min-w-0 transition-colors duration-200 rounded-2xl -mx-2 px-2 py-2" [attr.data-verse-number]="verse.number" [class.read-verse-highlight]="verse.number === readHighlightedVerseNumber()">
                   <p class="text-xs text-gray-400 mb-1">Verse {{ verse.number }} of {{ surah()!.verses }}</p>
 <div class="bg-white/90 dark:bg-gray-800/95 rounded-2xl shadow-xl dark:shadow-gray-900/50 px-4 md:px-6 py-5 md:py-8 w-full min-w-0 overflow-x-hidden verse-arabic-wrap">
-                  <p class="text-primary text-right font-arabic read-verse-arabic">
+                  <p class="text-primary dark:text-white text-right font-arabic read-verse-arabic">
                       {{ verse.arabic }}
                       <span class="inline-block bg-primary text-white rounded-full text-center read-verse-num ml-2">{{ verse.number }}</span>
                     </p>
                   </div>
-                  <p class="text-gray-700 leading-snug mt-2 read-verse-translation break-words min-w-0 w-full">{{ verse.translation }}</p>
+                  <p class="text-gray-700 dark:text-white leading-snug mt-2 read-verse-translation break-words min-w-0 w-full">{{ verse.translation }}</p>
                 </div>
               }
             </div>

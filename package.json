@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:surah-audio": "node scripts/build-surah-audio.mjs",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "serve:prod": "ng serve --configuration production",

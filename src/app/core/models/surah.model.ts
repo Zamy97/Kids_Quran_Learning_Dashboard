@@ -30,4 +30,9 @@ export interface Surah {
    * @see https://everyayah.com/
    */
   verseAudioBaseUrl?: string;
+  /**
+   * Path to a single full-surah MP3 in assets (e.g. from scripts/build-surah-audio).
+   * When set, the app plays this one file for continuous playback (better for background tabs).
+   */
+  fullSurahAudioUrl?: string;
 }

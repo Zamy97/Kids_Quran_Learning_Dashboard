@@ -10,14 +10,14 @@ import { Dua } from '../../../core/models/dua.model';
     <div class="h-full flex flex-col min-h-0 max-w-7xl mx-auto px-2 py-2 md:px-4 md:py-3">
       <!-- Fixed header: no scroll -->
       <div class="flex-shrink-0">
-        <h2 class="text-xl md:text-3xl font-bold text-primary mb-2">🤲 Du'as</h2>
+        <h2 class="text-xl md:text-3xl font-bold text-primary dark:text-white mb-2">🤲 Du'as</h2>
         <div class="flex flex-wrap gap-1 md:gap-2 mb-2">
           @for (cat of categories; track cat.id) {
             <button
               (click)="setCategory(cat.id)"
               [class.bg-primary]="category() === cat.id"
               [class.text-white]="category() === cat.id"
-              class="px-3 py-1.5 rounded-full font-semibold text-sm bg-gray-200 hover:bg-primary hover:text-white transition-colors"
+              class="px-3 py-1.5 rounded-full font-semibold text-sm bg-gray-200 dark:bg-gray-600 dark:text-gray-100 hover:bg-primary hover:text-white transition-colors"
             >
               {{ cat.label }}
             </button>
@@ -31,12 +31,12 @@ import { Dua } from '../../../core/models/dua.model';
           @for (dua of filteredDuas(); track dua.id) {
             <div
               (click)="openDua(dua.id)"
-              class="bg-white p-4 md:p-5 rounded-xl shadow-lg cursor-pointer flex flex-col min-h-[5rem]
+              class="bg-white dark:bg-gray-800 p-4 md:p-5 rounded-xl shadow-lg dark:shadow-gray-900/50 cursor-pointer flex flex-col min-h-[5rem]
                      hover:scale-[1.02] hover:shadow-xl active:scale-[0.99] transition-all border-l-4 border-primary"
             >
               <span class="text-3xl md:text-4xl mb-2 block shrink-0">{{ dua.icon }}</span>
-              <h3 class="dua-title font-bold text-primary mb-1">{{ dua.title }}</h3>
-              <p class="dua-occasion text-gray-600 text-sm">{{ dua.occasion }}</p>
+              <h3 class="dua-title font-bold text-primary dark:text-white mb-1">{{ dua.title }}</h3>
+              <p class="dua-occasion text-gray-600 dark:text-gray-300 text-sm">{{ dua.occasion }}</p>
             </div>
           }
         </div>

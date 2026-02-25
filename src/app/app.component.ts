@@ -16,5 +16,5 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
   `
 })
 export class AppComponent {
-  title = "Fatimah's Quran Learning App";
+  title = "Quran Learning Tool";
 }

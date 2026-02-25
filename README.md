@@ -1,4 +1,4 @@
-# Fatimah's Quran Journey 🌙
+# Quran Learning Tool 🌙
 
 A child-friendly, interactive Quran learning application built with **Angular 17+**, designed for touchscreen/kiosk mode on Raspberry Pi, tablets, and desktop browsers. Full offline capability with PWA support.
 

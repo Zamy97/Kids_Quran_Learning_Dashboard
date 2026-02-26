@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Fetched verse data (temp)
+scripts/.fetched-*.txt
+
 # Compiled output
 /dist
 /tmp

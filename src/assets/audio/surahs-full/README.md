@@ -8,7 +8,12 @@ This folder holds **one concatenated MP3 per surah** (built from [EveryAyah](htt
    ```bash
    npm run build:surah-audio
    ```
-   Or build one surah: `node scripts/build-surah-audio.mjs al-fatiha`
+   Or build specific surahs: `node scripts/build-surah-audio.mjs al-fatiha yusuf`
+
+   To download **full surahs for Juz 29 and Surah Yusuf** only:
+   ```bash
+   node scripts/build-surah-audio.mjs yusuf al-mulk al-qalam al-haqqah al-maarij nuh al-jinn al-muzzammil al-muddaththir al-qiyamah al-insan al-mursalat an-naba
+   ```
 
 2. Commit the generated `.mp3` files:
    ```bash

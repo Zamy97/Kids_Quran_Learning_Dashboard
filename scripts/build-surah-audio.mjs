@@ -4,8 +4,9 @@
  * concatenating with ffmpeg. Outputs to src/assets/audio/surahs-full/
  *
  * Requirements: Node 18+ (for fetch), ffmpeg on PATH
- * Usage: node scripts/build-surah-audio.mjs [surah-id]
- *   With no args, builds all surahs. With one arg (e.g. al-fatiha), builds that surah only.
+ * Usage: node scripts/build-surah-audio.mjs [surah-id ...]
+ *   With no args, builds all surahs. With one or more ids (e.g. al-fatiha yusuf), builds those only.
+ *   To download 29th juz + Surah Yusuf: node scripts/build-surah-audio.mjs yusuf al-mulk al-qalam al-haqqah al-maarij nuh al-jinn al-muzzammil al-muddaththir al-qiyamah al-insan al-mursalat an-naba
  *
  * EveryAyah: https://everyayah.com/ — please respect their terms and use for personal/educational purposes.
  */
@@ -23,8 +24,22 @@ const TEMP_BASE = path.join(ROOT, 'tmp-surah-build');
 
 const SURAHS = [
   { id: 'al-fatiha', number: 1, verses: 7 },
+  { id: 'yusuf', number: 12, verses: 111 },
   { id: 'yasin', number: 36, verses: 83 },
+  // Juz 29 (Tabarak)
+  { id: 'al-mulk', number: 67, verses: 30 },
   { id: 'al-qalam', number: 68, verses: 52 },
+  { id: 'al-haqqah', number: 69, verses: 52 },
+  { id: 'al-maarij', number: 70, verses: 44 },
+  { id: 'nuh', number: 71, verses: 28 },
+  { id: 'al-jinn', number: 72, verses: 28 },
+  { id: 'al-muzzammil', number: 73, verses: 20 },
+  { id: 'al-muddaththir', number: 74, verses: 56 },
+  { id: 'al-qiyamah', number: 75, verses: 40 },
+  { id: 'al-insan', number: 76, verses: 31 },
+  { id: 'al-mursalat', number: 77, verses: 50 },
+  { id: 'an-naba', number: 78, verses: 40 },
+  // Juz 30
   { id: 'al-adiyat', number: 100, verses: 11 },
   { id: 'al-qariah', number: 101, verses: 11 },
   { id: 'at-takathur', number: 102, verses: 8 },
@@ -181,12 +196,12 @@ async function buildSurah(surah, useFfmpeg) {
 }
 
 async function main() {
-  const filter = process.argv[2];
-  const list = filter
-    ? SURAHS.filter((s) => s.id === filter)
+  const filters = process.argv.slice(2);
+  const list = filters.length
+    ? SURAHS.filter((s) => filters.includes(s.id))
     : SURAHS;
   if (list.length === 0) {
-    console.error('No surah found. Use a surah id from the list, e.g. al-fatiha');
+    console.error('No surahs found. Use one or more surah ids from the list, e.g. al-fatiha yusuf');
     process.exit(1);
   }
 

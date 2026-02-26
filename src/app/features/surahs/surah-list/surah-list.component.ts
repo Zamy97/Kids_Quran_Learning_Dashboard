@@ -35,7 +35,7 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
         </div>
       </div>
 
-      <!-- Scrollable list: only this area scrolls -->
+      <!-- Scrollable list: grouped by juz -->
       <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
         @if (filteredSurahs().length === 0) {
           <div class="flex flex-col items-center justify-center text-center py-12">
@@ -43,42 +43,51 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
             <p class="text-sm md:text-xl text-gray-500 dark:text-gray-400">No surahs found matching "{{ searchQuery }}"</p>
           </div>
         } @else {
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 pb-4">
-            @for (surah of filteredSurahs(); track surah.id) {
-              <div
-                (click)="openSurah(surah.id)"
-                class="surah-card bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 cursor-pointer
-                       hover:scale-[1.02] hover:shadow-lg active:scale-[0.99] transition-all flex flex-col
-                       border-l-4 min-h-[4.5rem]"
-                [class.border-l-primary]="!surah.memorized"
-                [class.border-l-green-500]="surah.memorized"
-                [class.bg-gradient-to-br]="surah.memorized"
-                [class.from-blue-50]="surah.memorized"
-                [class.to-cyan-50]="surah.memorized"
-                [class.dark:from-gray-700]="surah.memorized"
-                [class.dark:to-gray-600]="surah.memorized"
-              >
-                <div class="flex items-center gap-3 flex-1 p-3 md:p-4">
-                  <div class="surah-num-badge bg-primary text-white rounded-full flex items-center justify-center font-bold shrink-0">
-                    {{ surah.number }}
-                  </div>
-                  <div class="min-w-0 flex-1 flex flex-col justify-center gap-1">
-                    <div class="surah-name-ar font-bold text-primary dark:text-white font-arabic leading-tight text-right" dir="rtl">
-                      {{ surah.nameAr }}
+          <div class="flex flex-col gap-4 pb-4">
+            @for (block of surahsByJuz(); track block.juz) {
+              <div class="flex flex-col gap-2">
+                <h3 class="text-sm font-bold text-primary dark:text-white/90 sticky top-0 bg-inherit py-1 z-10">
+                  Juz {{ block.juz }}
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                  @for (surah of block.surahs; track surah.id) {
+                    <div
+                      (click)="openSurah(surah.id)"
+                      class="surah-card bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 cursor-pointer
+                             hover:scale-[1.02] hover:shadow-lg active:scale-[0.99] transition-all flex flex-col
+                             border-l-4 min-h-[4.5rem]"
+                      [class.border-l-primary]="!surah.memorized"
+                      [class.border-l-green-500]="surah.memorized"
+                      [class.bg-gradient-to-br]="surah.memorized"
+                      [class.from-blue-50]="surah.memorized"
+                      [class.to-cyan-50]="surah.memorized"
+                      [class.dark:from-gray-700]="surah.memorized"
+                      [class.dark:to-gray-600]="surah.memorized"
+                    >
+                      <div class="flex items-center gap-3 flex-1 p-3 md:p-4">
+                        <div class="surah-num-badge bg-primary text-white rounded-full flex items-center justify-center font-bold shrink-0">
+                          {{ surah.number }}
+                        </div>
+                        <div class="min-w-0 flex-1 flex flex-col justify-center gap-1">
+                          <div class="surah-name-ar font-bold text-primary dark:text-white font-arabic leading-tight text-right" dir="rtl">
+                            {{ surah.nameAr }}
+                          </div>
+                          <div class="surah-name-en font-semibold text-gray-800 dark:text-gray-200 leading-tight">
+                            {{ surah.nameEn }}
+                          </div>
+                          <div class="surah-meta text-gray-500 dark:text-gray-400 leading-tight">
+                            {{ surah.meaning }} · {{ surah.verses }} v
+                          </div>
+                        </div>
+                      </div>
+                      @if (surah.memorized) {
+                        <span class="inline-block bg-green-500 text-white px-2 py-0.5 rounded-b-xl text-[10px] font-semibold shrink-0 text-center">
+                          ✓ Memorized
+                        </span>
+                      }
                     </div>
-                    <div class="surah-name-en font-semibold text-gray-800 dark:text-gray-200 leading-tight">
-                      {{ surah.nameEn }}
-                    </div>
-                    <div class="surah-meta text-gray-500 dark:text-gray-400 leading-tight">
-                      {{ surah.meaning }} · {{ surah.verses }} v
-                    </div>
-                  </div>
+                  }
                 </div>
-                @if (surah.memorized) {
-                  <span class="inline-block bg-green-500 text-white px-2 py-0.5 rounded-b-xl text-[10px] font-semibold shrink-0 text-center">
-                    ✓ Memorized
-                  </span>
-                }
               </div>
             }
           </div>
@@ -110,6 +119,19 @@ import { ProgressTrackerService } from '../../../core/services/progress-tracker.
 export class SurahListComponent {
   searchQuery = '';
   filteredSurahs = signal(this.quranService.surahsList());
+
+  /** Surahs grouped by juz (for display). When searching, filtered surahs are still grouped by juz. */
+  surahsByJuz = computed(() => {
+    const list = this.filteredSurahs();
+    const map = new Map<number, typeof list>();
+    for (const s of list) {
+      const group = map.get(s.juz) ?? [];
+      group.push(s);
+      map.set(s.juz, group);
+    }
+    const juzNumbers = Array.from(map.keys()).sort((a, b) => a - b);
+    return juzNumbers.map(juz => ({ juz, surahs: (map.get(juz) ?? []).sort((a, b) => a.number - b.number) }));
+  });
 
   /** Last surah the user opened (saved when they visit surah detail). Only shown when set. */
   continueSurah = computed(() => {

@@ -43,6 +43,26 @@ export class QuranDataService {
     );
   }
 
+  /** Surahs grouped by juz (1–30). Each key is juz number, value is sorted list of surahs in that juz. */
+  getSurahsByJuz(): Map<number, Surah[]> {
+    const map = new Map<number, Surah[]>();
+    for (const s of this.surahs()) {
+      const list = map.get(s.juz) ?? [];
+      list.push(s);
+      map.set(s.juz, list);
+    }
+    for (const list of map.values()) {
+      list.sort((a, b) => a.number - b.number);
+    }
+    return map;
+  }
+
+  /** Ordered list of juz numbers that have at least one surah in the app. */
+  getJuzNumbers(): number[] {
+    const set = new Set(this.surahs().map(s => s.juz));
+    return Array.from(set).sort((a, b) => a - b);
+  }
+
   getDuaById(id: string): Dua | undefined {
     return this.duas().find(d => d.id === id);
   }

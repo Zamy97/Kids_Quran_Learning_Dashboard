@@ -13,6 +13,8 @@ export interface Surah {
   meaning: string;
   verses: number;
   revelation: 'Makkah' | 'Madinah';
+  /** Juz number (1–30) where this surah begins. Used to group surahs by juz. */
+  juz: number;
   memorized: boolean;
   story: string;
   verses_data: Verse[];
